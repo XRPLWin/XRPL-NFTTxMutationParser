@@ -6,46 +6,52 @@ use PHPUnit\Framework\TestCase;
 use XRPLWin\XRPLNFTTxMutatationParser\NFTTxMutationParser;
 
 /***
- * NFTokenPage is modified, token is minted on behalf of issuer.
- * @see https://hash.xrp.fans/D904ADB2D6DD9644B7ACC14E351536B8570F8451AAB01E946ADB47B1E381399F/json
+ * NFTokenAcceptOffer - Sell Offer
+ * @see https://hash.xrp.fans/04EBA3FC9A54613CD782F8F659297E8FDAD8A2D1F7C6D7BE252419079D50483B/json
  */
-final class Tx01Test extends TestCase
+final class Tx11Test extends TestCase
 {
-    public function testNFTokenMintListByIssuer()
+    /**
+     * 
+     */
+    public function testNFTokenAcceptSellOfferByAccepter()
     {
-        $transaction = file_get_contents(__DIR__.'/fixtures/tx01.json');
+        $transaction = file_get_contents(__DIR__.'/fixtures/tx11.json');
         $transaction = \json_decode($transaction);
-        $account = "rHeRoYtbiMSKhtXm4k7tff1PrcwYnCePR3";
+        $account = "rJezoKZH1nKavjZfjQAAZwvNHR6jabDfek";
         $NFTTxMutationParser = new NFTTxMutationParser($account, $transaction->result);
         $parsedTransaction = $NFTTxMutationParser->result();
-        dd($parsedTransaction);
+        //dd($parsedTransaction);
         $this->assertIsArray($parsedTransaction);
         $this->assertEquals(2,count($parsedTransaction));
         $this->assertArrayHasKey('in',$parsedTransaction);
         $this->assertArrayHasKey('out',$parsedTransaction);
-        $this->assertEquals(['00082710B6961B76BA53FED0D85EF7267A4DBD6152FF1C06C11C4978000001DE'],$parsedTransaction['in']);
+        $this->assertEquals(['00082710704B411C4B1627649C1224A381B3AD9C2D8F5B7A53C2AF3000000095'],$parsedTransaction['in']);
         $this->assertEquals([],$parsedTransaction['out']);
     }
 
-    public function testNFTokenMintListBySender()
+    /**
+     * 
+     */
+    public function testNFTokenAcceptOfferByBuyer()
     {
-        $transaction = file_get_contents(__DIR__.'/fixtures/tx01.json');
+        $transaction = file_get_contents(__DIR__.'/fixtures/tx11.json');
         $transaction = \json_decode($transaction);
-        $account = "rfx2mVhTZzc6bLXKeYyFKtpha2LHrkNZFT";
+        $account = "rJezoKZH1nKavjZfjQAAZwvNHR6jabDfek";
         $NFTTxMutationParser = new NFTTxMutationParser($account, $transaction->result);
         $parsedTransaction = $NFTTxMutationParser->result();
-        
+        //dd($parsedTransaction);
         $this->assertIsArray($parsedTransaction);
         $this->assertEquals(2,count($parsedTransaction));
         $this->assertArrayHasKey('in',$parsedTransaction);
         $this->assertArrayHasKey('out',$parsedTransaction);
-        $this->assertEquals([],$parsedTransaction['in']);
+        $this->assertEquals(['00082710704B411C4B1627649C1224A381B3AD9C2D8F5B7A53C2AF3000000095'],$parsedTransaction['in']);
         $this->assertEquals([],$parsedTransaction['out']);
     }
 
-    public function testNFTokenMintListByOther()
+    public function testNFTokenAcceptOfferByOther()
     {
-        $transaction = file_get_contents(__DIR__.'/fixtures/tx01.json');
+        $transaction = file_get_contents(__DIR__.'/fixtures/tx11.json');
         $transaction = \json_decode($transaction);
         $account = "rvYAfWj5gh67oV6fW32ZzP3Aw4Eubs59B";
         $NFTTxMutationParser = new NFTTxMutationParser($account, $transaction->result);

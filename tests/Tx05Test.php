@@ -11,7 +11,7 @@ use XRPLWin\XRPLNFTTxMutatationParser\NFTTxMutationParser;
  */
 final class Tx05Test extends TestCase
 {
-    public function testNFTokenBurnSelf()
+    public function testNFTokenBurnBySelf()
     {
         $transaction = file_get_contents(__DIR__.'/fixtures/tx05.json');
         $transaction = \json_decode($transaction);
@@ -27,7 +27,7 @@ final class Tx05Test extends TestCase
         $this->assertEquals(['000800002138571C1D5416A14CD66740650DF2C319918B3616E5DA9D00000001'],$parsedTransaction['out']);
     }
 
-    public function testNFTokenBurnOther()
+    public function testNFTokenBurnByOther()
     {
         $transaction = file_get_contents(__DIR__.'/fixtures/tx05.json');
         $transaction = \json_decode($transaction);

@@ -12,7 +12,7 @@ use XRPLWin\XRPLNFTTxMutatationParser\NFTTxMutationParser;
  */
 final class Tx03Test extends TestCase
 {
-    public function testNFTokenMintListIssuer()
+    public function testNFTokenMintListByIssuer()
     {
         $transaction = file_get_contents(__DIR__.'/fixtures/tx03.json');
         $transaction = \json_decode($transaction);
@@ -28,7 +28,7 @@ final class Tx03Test extends TestCase
         $this->assertEquals([],$parsedTransaction['out']);
     }
 
-    public function testNFTokenMintListSender()
+    public function testNFTokenMintListBySender()
     {
         $transaction = file_get_contents(__DIR__.'/fixtures/tx03.json');
         $transaction = \json_decode($transaction);
@@ -44,7 +44,7 @@ final class Tx03Test extends TestCase
         $this->assertEquals([],$parsedTransaction['out']);
     }
 
-    public function testNFTokenMintListOther()
+    public function testNFTokenMintListByOther()
     {
         $transaction = file_get_contents(__DIR__.'/fixtures/tx03.json');
         $transaction = \json_decode($transaction);

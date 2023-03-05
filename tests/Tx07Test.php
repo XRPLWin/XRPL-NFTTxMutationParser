@@ -7,7 +7,7 @@ use XRPLWin\XRPLNFTTxMutatationParser\NFTTxMutationParser;
 
 /***
  * This transaction burns single token 00090D7570357F6122254CF8FE8B6984D11E38AE316F95C944B17C9E00000003 issued by another account.
- * This is last in NFTokenPage and NFTokenPage is deleted.
+ * This is second to last in NFTokenPage and NFTokenPage is not deleted.
  * @see C699F0AA5FC03A091A19C8CB5666A7BB9FE6A721FE00906E9D73EE03D2E3AF09 (testnet)
  */
 final class Tx07Test extends TestCase
@@ -47,7 +47,7 @@ final class Tx07Test extends TestCase
         $this->assertEquals(['00090D7570357F6122254CF8FE8B6984D11E38AE316F95C944B17C9E00000003'],$parsedTransaction['out']);
     }
 
-    public function testNFTokenBurnOther()
+    public function testNFTokenBurnByOther()
     {
         $transaction = file_get_contents(__DIR__.'/fixtures/tx07.json');
         $transaction = \json_decode($transaction);

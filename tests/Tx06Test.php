@@ -12,7 +12,7 @@ use XRPLWin\XRPLNFTTxMutatationParser\NFTTxMutationParser;
  */
 final class Tx06Test extends TestCase
 {
-    public function testNFTokenBurnSelfLastToken()
+    public function testNFTokenBurnSelfLastByToken()
     {
         $transaction = file_get_contents(__DIR__.'/fixtures/tx06.json');
         $transaction = \json_decode($transaction);
@@ -31,7 +31,7 @@ final class Tx06Test extends TestCase
     /**
      * From token issuer's perspective NFT burn has no effect since issuer is not owner of that NFT.
      */
-    public function testNFTokenBurnIssuer()
+    public function testNFTokenBurnByIssuer()
     {
         $transaction = file_get_contents(__DIR__.'/fixtures/tx06.json');
         $transaction = \json_decode($transaction);
@@ -47,7 +47,7 @@ final class Tx06Test extends TestCase
         $this->assertEquals([],$parsedTransaction['out']);
     }
 
-    public function testNFTokenBurnOther()
+    public function testNFTokenBurnByOther()
     {
         $transaction = file_get_contents(__DIR__.'/fixtures/tx06.json');
         $transaction = \json_decode($transaction);

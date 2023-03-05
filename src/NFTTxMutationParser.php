@@ -9,45 +9,73 @@ class NFTTxMutationParser
 {
   private readonly string $account;
   private readonly \stdClass $tx;
-  private string $affected_account;
-  private array $result_in = [];
-  private array $result_out = [];
+  private ?string $affected_account = null;
+  private ?string $affected_account_context = null;
+  private ?string $result_nftokenid = null;
+  private ?bool   $result_in = null;
 
   public function __construct(string $reference_account, \stdClass $tx)
   {
+    # COMMON
     $this->account = $reference_account;
     $this->tx = $tx;
-    $this->affected_account = $this->tx->Account;
+
+    if(!isset($this->tx->meta->AffectedNodes))
+      return;
+
+    switch($this->tx->TransactionType) {
+      case 'NFTokenMint':
+        $this->handleNFTokenMint();
+        break;
+      case 'NFTokenBurn':
+        $this->handleNFTokenBurn();
+        break;
+      case 'NFTokenAcceptOffer':
+        $this->handleNFTokenAcceptOffer();
+        break;
+    }
+  }
+
+  private function handleNFTokenMint(): void
+  {
+    $affected_account = $this->tx->Account;
+    if(isset($this->tx->Issuer))
+      $affected_account = $this->tx->Issuer;
     
-    $meta = $this->tx->meta;
-
-    if(!isset($meta->AffectedNodes)) {
+    if($this->affected_account != $this->account)
       return;
-    }
 
-    # Switch affected account to Issuer in case minting in behalf to
-    if($this->tx->TransactionType = 'NFTokenMint' && isset($this->tx->Issuer)) {
-      $this->affected_account = $this->tx->Issuer;
-    }
+    $this->result_nftokenid = $this->extractAffectedNFTokenID();
+    dd('test');
+  }
 
-    # Switch affected account to Owner in case burning in behalf to
-    if($this->tx->TransactionType = 'NFTokenBurn' && isset($this->tx->Owner)) {
-      $this->affected_account = $this->tx->Owner;
-    }
-   
-    # If affected account is not context account exit
-    if($this->affected_account != $this->account) {
+  private function handleNFTokenBurn(): void
+  {
+    $affected_account = $this->tx->Account;
+    if(isset($this->tx->Owner))
+      $affected_account = $this->tx->Owner;
+    
+    if($this->affected_account != $this->account)
       return;
-    }
-   
+  }
+
+  private function handleNFTokenAcceptOffer(): void
+  {
+    dd('todo');
+  }
+
+
+  private function extractAffectedNFTokenID(): string
+  {
     $in = $out = [];
-    
-    foreach($meta->AffectedNodes as $affected_node) {
+    //$NFTokenPageIndex = 0;
+    foreach($this->tx->meta->AffectedNodes as $affected_node) {
 
       if(isset($affected_node->CreatedNode)) {
 
         if($affected_node->CreatedNode->LedgerEntryType === 'NFTokenPage') {
-          
+
+          //$NFTokenPageIndex++;
           $inout = $this->extractNFTokenIDsFromNFTTokenPageChange(
             null,
             $affected_node->CreatedNode->NewFields
@@ -55,11 +83,15 @@ class NFTTxMutationParser
           $in = \array_merge($in,$inout['in']);
           $out = \array_merge($out,$inout['out']);
           unset($inout);
+          
         }
+      }
 
-      } elseif(isset($affected_node->ModifiedNode)) {
+      if(isset($affected_node->ModifiedNode)) {
 
         if($affected_node->ModifiedNode->LedgerEntryType === 'NFTokenPage') {
+
+          //$NFTokenPageIndex++;
           $inout = $this->extractNFTokenIDsFromNFTTokenPageChange(
             $affected_node->ModifiedNode->PreviousFields,
             $affected_node->ModifiedNode->FinalFields
@@ -67,12 +99,17 @@ class NFTTxMutationParser
           $in = \array_merge($in,$inout['in']);
           $out = \array_merge($out,$inout['out']);
           unset($inout);
+          
+          
         }
 
-      } elseif(isset($affected_node->DeletedNode)) {
+      }
+      
+      if(isset($affected_node->DeletedNode)) {
 
         if($affected_node->DeletedNode->LedgerEntryType === 'NFTokenPage') {
-          
+
+          //$NFTokenPageIndex++;
           $inout = $this->extractNFTokenIDsFromNFTTokenPageChange(
             $affected_node->DeletedNode->FinalFields,
             null
@@ -80,16 +117,15 @@ class NFTTxMutationParser
           $in = \array_merge($in,$inout['in']);
           $out = \array_merge($out,$inout['out']);
           unset($inout);
+          //$NFTokenPageIndex++;
         }
 
       }
     }
-
+    
     $in = \array_unique($in);
     $out = \array_unique($out);
-
-    $this->result_in = $in;
-    $this->result_out = $out;
+    return ['in' => $in, 'out' => $out];
   }
 
   /**
@@ -116,11 +152,41 @@ class NFTTxMutationParser
     return ['in' => \array_values($in), 'out' => \array_values($out)];
   }
 
+  private function extractAffectedAccountFromDeletedOfferInMeta()
+  {
+    foreach($this->tx->meta->AffectedNodes as $affected_node) {
+
+      if(isset($affected_node->DeletedNode) && $affected_node->DeletedNode->LedgerEntryType == 'NFTokenOffer') {
+        $node = $affected_node->DeletedNode;
+        
+        return $node->FinalFields->Owner;
+      }
+
+      /*$node = null;
+      if(isset($affected_node->CreatedNode)) {
+        $node = $affected_node->CreatedNode;
+      } elseif(isset($affected_node->ModifiedNode)) {
+        $node = $affected_node->ModifiedNode;
+      } elseif(isset($affected_node->DeletedNode)) {
+        $node = $affected_node->DeletedNode;
+      }
+      if($node === null)
+        continue;
+      if($node->LedgerEntryType == 'NFTokenOffer') {
+
+      }
+      
+      dd($node);*/
+    }
+
+    throw new \Exception('Unable to extract account from deleted node of type NFTokenOffer in method extractAffectedAccountFromDeletedOfferInMeta');
+  }
+
   public function result(): array
   {
     return [
-      'in' => $this->result_in,
-      'out' => $this->result_out
+      'nftokenid' => $this->result_nftokenid,
+      'direction' => ($this->result_in === null) ? 'UNKNOWN': ( $this->result_in ? 'IN':'OUT' )
     ];
   }
 }
