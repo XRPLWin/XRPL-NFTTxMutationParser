@@ -24,6 +24,7 @@ final class Tx09Test extends TestCase
         $this->assertArrayHasKey('direction',$parsedTransaction);
         $this->assertEquals(null,$parsedTransaction['nftokenid']);
         $this->assertEquals('UNKNOWN',$parsedTransaction['direction']);
+        $this->assertEquals('UNKNOWN',$parsedTransaction['role']);
     }
 
     public function testNFTokenCancelOfferByOther()
@@ -39,5 +40,6 @@ final class Tx09Test extends TestCase
         $this->assertArrayHasKey('direction',$parsedTransaction);
         $this->assertEquals(null,$parsedTransaction['nftokenid']);
         $this->assertEquals('UNKNOWN',$parsedTransaction['direction']);
+        $this->assertEquals('UNKNOWN',$parsedTransaction['role']);
     }
 }

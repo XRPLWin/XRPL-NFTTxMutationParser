@@ -8,14 +8,28 @@ namespace XRPLWin\XRPLNFTTxMutatationParser;
 class NFTTxMutationParser
 {
   const DIRECTION_UNKNOWN = 'UNKNOWN';
-  const DIRECTION_IN = 'IN';
-  const DIRECTION_OUT = 'OUT';
+  const DIRECTION_IN      = 'IN';
+  const DIRECTION_OUT     = 'OUT';
 
+  # Common
+  const ROLE_UNKNOWN    = 'UNKNOWN';
+  const ROLE_OWNER      = 'OWNER';
+
+  # Mint (minter,owner,unknown)
+  const ROLE_MINTER     = 'MINTER';
+  # Burn (burner,owner,unknown)
+  const ROLE_BURNER     = 'BURNER';
+  
+  # Trade (buyer,seller,broker,unknown)
+  const ROLE_BUYER      = 'BUYER';
+  const ROLE_SELLER     = 'SELLER';
+  const ROLE_BROKER     = 'BROKER';
 
   private readonly string $account;
   private readonly \stdClass $tx;
   private ?string $result_nftokenid = null;
   private string $result_direction = self::DIRECTION_UNKNOWN;
+  private string $result_role = self::ROLE_UNKNOWN;
 
   public function __construct(string $reference_account, \stdClass $tx)
   {
@@ -42,8 +56,18 @@ class NFTTxMutationParser
   private function handleNFTokenMint(): void
   {
     $affected_account = $this->tx->Account;
+
     if(isset($this->tx->Issuer))
       $affected_account = $this->tx->Issuer;
+    
+    # ROLE START
+    if($this->account == $this->tx->Account)
+        $this->result_role = self::ROLE_MINTER;
+    if(isset($this->tx->Issuer)) {
+      if($this->account == $this->tx->Issuer)
+        $this->result_role = self::ROLE_OWNER;
+    }
+    # ROLE END
     
     # If affected account is not context account exit
     if($affected_account != $this->account)
@@ -58,8 +82,18 @@ class NFTTxMutationParser
   private function handleNFTokenBurn(): void
   {
     $affected_account = $this->tx->Account;
+
     if(isset($this->tx->Owner))
       $affected_account = $this->tx->Owner;
+
+    # ROLE START
+    if($this->account == $this->tx->Account)
+        $this->result_role = self::ROLE_BURNER;
+    if(isset($this->tx->Owner)) {
+      if($this->account == $this->tx->Owner)
+        $this->result_role = self::ROLE_OWNER;
+    }
+    # ROLE END
     
     //Reference account is not affected account
     if($affected_account != $this->account)
@@ -112,6 +146,8 @@ class NFTTxMutationParser
           $context = 'BUYER';
         } elseif($this->tx->NFTokenSellOffer == $data['LedgerIndex']) {
           $context = 'SELLER';
+        } else {
+          $this->result_role = self::ROLE_BROKER;
         }
         $affected_account = $data['account'];
       }
@@ -129,14 +165,13 @@ class NFTTxMutationParser
 
     if($context == 'SELLER') {
       $this->result_direction = self::DIRECTION_OUT;
+      $this->result_role = self::ROLE_SELLER;
     } elseif($context == 'BUYER') {
       $this->result_direction = self::DIRECTION_IN;
+      $this->result_role = self::ROLE_BUYER;
     }
   }
 
-  /**
-   * OK
-   */
   private function extractAffectedNFTokenID(): string
   {
     $in = $out = [];
@@ -206,7 +241,6 @@ class NFTTxMutationParser
   /**
    * Helper function that extracts token changes from single meta prev and final fields.
    * @return array ['in' => [ 'NFTokenID, ... ], 'out' => [ 'NFTokenID, ... ] ]
-   * OK
    */
   private function extractNFTokenIDsFromNFTTokenPageChange(?\stdClass $PreviousFields, ?\stdClass $FinalFields): array
   {
@@ -230,7 +264,11 @@ class NFTTxMutationParser
     return ['in' => \array_values($in), 'out' => \array_values($out)];
   }
 
-  private function extractDataFromDeletedOfferInMeta()
+  /**
+   * Checks first deleted node of type NFTokenOffer and extracts Owner and NFTokenID
+   * @return array
+   */
+  private function extractDataFromDeletedOfferInMeta(): array
   {
     $account = null;
     $NFTokenID = null;
@@ -250,7 +288,11 @@ class NFTTxMutationParser
     return ['account' => $account, 'NFTokenID' => $NFTokenID];
   }
 
-  private function extractDataFromDeletedOfferInMeta_PriorityReferenceAccount()
+  /**
+   * Extracts first found deleted node of type NFTokenOffer where Owner is $this->account and extracts Owner, NFTokenID and LedgerIndex
+   * @return array
+   */
+  private function extractDataFromDeletedOfferInMeta_PriorityReferenceAccount(): array
   {
     $account = $NFTokenID = $LedgerIndex = null;
 
@@ -275,7 +317,7 @@ class NFTTxMutationParser
     return [
       'nftokenid' => $this->result_nftokenid,
       'direction' => $this->result_direction,
-      
+      'role'      => $this->result_role, 
     ];
   }
 }
