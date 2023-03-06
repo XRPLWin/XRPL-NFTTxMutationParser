@@ -11,6 +11,83 @@ use XRPLWin\XRPLNFTTxMutatationParser\NFTTxMutationParser;
  */
 final class Tx12Test extends TestCase
 {
+    public function testNFTokenTradeByBroker()
+    {
+        $transaction = file_get_contents(__DIR__.'/fixtures/tx12.json');
+        $transaction = \json_decode($transaction);
+        $account = "rPpDcLBcRFYhUqeU9Rmmr5hgJWSkrL4VxP";
+        $NFTTxMutationParser = new NFTTxMutationParser($account, $transaction->result);
+        $parsedTransaction = $NFTTxMutationParser->result();
+        //dd($parsedTransaction);
+
+        $this->assertArrayHasKey('nftokenid',$parsedTransaction);
+        $this->assertArrayHasKey('direction',$parsedTransaction);
+        $this->assertEquals(null,$parsedTransaction['nftokenid']);
+        $this->assertEquals('UNKNOWN',$parsedTransaction['direction']);
+
+    }
+
+    public function testNFTokenTradeBySeller()
+    {
+        $transaction = file_get_contents(__DIR__.'/fixtures/tx12.json');
+        $transaction = \json_decode($transaction);
+        $account = "rHjTJ9eWkPutj3X89sseaRe3kqeeLKMmbg";
+        $NFTTxMutationParser = new NFTTxMutationParser($account, $transaction->result);
+        $parsedTransaction = $NFTTxMutationParser->result();
+        //dd($parsedTransaction);
+
+        $this->assertArrayHasKey('nftokenid',$parsedTransaction);
+        $this->assertArrayHasKey('direction',$parsedTransaction);
+        $this->assertEquals('000800FFB7896EF726023B37B8FC50B6D3623A464B2F883B0000099B00000000',$parsedTransaction['nftokenid']);
+        $this->assertEquals('OUT',$parsedTransaction['direction']);
+
+    }
+
+    public function testNFTokenTradeByBuyer()
+    {
+        $transaction = file_get_contents(__DIR__.'/fixtures/tx12.json');
+        $transaction = \json_decode($transaction);
+        $account = "rDVcd1qz8Vhc84H8ZnA7B1XDomjagLyDFB";
+        $NFTTxMutationParser = new NFTTxMutationParser($account, $transaction->result);
+        $parsedTransaction = $NFTTxMutationParser->result();
+        //dd($parsedTransaction);
+
+        $this->assertArrayHasKey('nftokenid',$parsedTransaction);
+        $this->assertArrayHasKey('direction',$parsedTransaction);
+        $this->assertEquals('000800FFB7896EF726023B37B8FC50B6D3623A464B2F883B0000099B00000000',$parsedTransaction['nftokenid']);
+        $this->assertEquals('IN',$parsedTransaction['direction']);
+
+    }
+
+    public function testNFTokenTradeByOther()
+    {
+        $transaction = file_get_contents(__DIR__.'/fixtures/tx11.json');
+        $transaction = \json_decode($transaction);
+        $account = "rvYAfWj5gh67oV6fW32ZzP3Aw4Eubs59B";
+        $NFTTxMutationParser = new NFTTxMutationParser($account, $transaction->result);
+        $parsedTransaction = $NFTTxMutationParser->result();
+        
+        $this->assertIsArray($parsedTransaction);
+        $this->assertArrayHasKey('nftokenid',$parsedTransaction);
+        $this->assertArrayHasKey('direction',$parsedTransaction);
+        $this->assertEquals(null,$parsedTransaction['nftokenid']);
+        $this->assertEquals('UNKNOWN',$parsedTransaction['direction']);
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    //OLD BELOW
     /**
      * This is buy offer by rsa614fckHaBjDpCcZNQqfvVFVPYZzPvE2, and rDuck4z5jdAJLDaRMwpc2xZhsCKqqTMRsr has accepted to sell.
      * In result rDuck4z5jdAJLDaRMwpc2xZhsCKqqTMRsr loses NFT.

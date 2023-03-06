@@ -19,13 +19,12 @@ final class Tx06Test extends TestCase
         $account = "rV3WAvwwXgvPrYiUgSoytn9w3mejtPgLo";
         $NFTTxMutationParser = new NFTTxMutationParser($account, $transaction->result);
         $parsedTransaction = $NFTTxMutationParser->result();
+
+        $this->assertArrayHasKey('nftokenid',$parsedTransaction);
+        $this->assertArrayHasKey('direction',$parsedTransaction);
+        $this->assertEquals('000800002138571C1D5416A14CD66740650DF2C319918B360000099A00000000',$parsedTransaction['nftokenid']);
+        $this->assertEquals('OUT',$parsedTransaction['direction']);
         
-        $this->assertIsArray($parsedTransaction);
-        $this->assertEquals(2,count($parsedTransaction));
-        $this->assertArrayHasKey('in',$parsedTransaction);
-        $this->assertArrayHasKey('out',$parsedTransaction);
-        $this->assertEquals([],$parsedTransaction['in']);
-        $this->assertEquals(['000800002138571C1D5416A14CD66740650DF2C319918B360000099A00000000'],$parsedTransaction['out']);
     }
 
     /**
@@ -40,11 +39,10 @@ final class Tx06Test extends TestCase
         $parsedTransaction = $NFTTxMutationParser->result();
         
         $this->assertIsArray($parsedTransaction);
-        $this->assertEquals(2,count($parsedTransaction));
-        $this->assertArrayHasKey('in',$parsedTransaction);
-        $this->assertArrayHasKey('out',$parsedTransaction);
-        $this->assertEquals([],$parsedTransaction['in']);
-        $this->assertEquals([],$parsedTransaction['out']);
+        $this->assertArrayHasKey('nftokenid',$parsedTransaction);
+        $this->assertArrayHasKey('direction',$parsedTransaction);
+        $this->assertEquals(null,$parsedTransaction['nftokenid']);
+        $this->assertEquals('UNKNOWN',$parsedTransaction['direction']);
     }
 
     public function testNFTokenBurnByOther()
@@ -56,10 +54,9 @@ final class Tx06Test extends TestCase
         $parsedTransaction = $NFTTxMutationParser->result();
         
         $this->assertIsArray($parsedTransaction);
-        $this->assertEquals(2,count($parsedTransaction));
-        $this->assertArrayHasKey('in',$parsedTransaction);
-        $this->assertArrayHasKey('out',$parsedTransaction);
-        $this->assertEquals([],$parsedTransaction['in']);
-        $this->assertEquals([],$parsedTransaction['out']);
+        $this->assertArrayHasKey('nftokenid',$parsedTransaction);
+        $this->assertArrayHasKey('direction',$parsedTransaction);
+        $this->assertEquals(null,$parsedTransaction['nftokenid']);
+        $this->assertEquals('UNKNOWN',$parsedTransaction['direction']);
     }
 }

@@ -19,13 +19,12 @@ final class Tx03Test extends TestCase
         $account = "rKgR5LMCU1opzENpP7Qz7bRsQB4MKPpJb4";
         $NFTTxMutationParser = new NFTTxMutationParser($account, $transaction->result);
         $parsedTransaction = $NFTTxMutationParser->result();
+
+        $this->assertArrayHasKey('nftokenid',$parsedTransaction);
+        $this->assertArrayHasKey('direction',$parsedTransaction);
+        $this->assertEquals('00081770CCE71D9E7BD07E3A771C7619DA982D62CD37325A0000099A00000000',$parsedTransaction['nftokenid']);
+        $this->assertEquals('IN',$parsedTransaction['direction']);
         
-        $this->assertIsArray($parsedTransaction);
-        $this->assertEquals(2,count($parsedTransaction));
-        $this->assertArrayHasKey('in',$parsedTransaction);
-        $this->assertArrayHasKey('out',$parsedTransaction);
-        $this->assertEquals(['00081770CCE71D9E7BD07E3A771C7619DA982D62CD37325A0000099A00000000'],$parsedTransaction['in']);
-        $this->assertEquals([],$parsedTransaction['out']);
     }
 
     public function testNFTokenMintListBySender()
@@ -35,13 +34,12 @@ final class Tx03Test extends TestCase
         $account = "rfx2mVhTZzc6bLXKeYyFKtpha2LHrkNZFT";
         $NFTTxMutationParser = new NFTTxMutationParser($account, $transaction->result);
         $parsedTransaction = $NFTTxMutationParser->result();
-        
+
         $this->assertIsArray($parsedTransaction);
-        $this->assertEquals(2,count($parsedTransaction));
-        $this->assertArrayHasKey('in',$parsedTransaction);
-        $this->assertArrayHasKey('out',$parsedTransaction);
-        $this->assertEquals([],$parsedTransaction['in']);
-        $this->assertEquals([],$parsedTransaction['out']);
+        $this->assertArrayHasKey('nftokenid',$parsedTransaction);
+        $this->assertArrayHasKey('direction',$parsedTransaction);
+        $this->assertEquals(null,$parsedTransaction['nftokenid']);
+        $this->assertEquals('UNKNOWN',$parsedTransaction['direction']);
     }
 
     public function testNFTokenMintListByOther()
@@ -53,10 +51,9 @@ final class Tx03Test extends TestCase
         $parsedTransaction = $NFTTxMutationParser->result();
         
         $this->assertIsArray($parsedTransaction);
-        $this->assertEquals(2,count($parsedTransaction));
-        $this->assertArrayHasKey('in',$parsedTransaction);
-        $this->assertArrayHasKey('out',$parsedTransaction);
-        $this->assertEquals([],$parsedTransaction['in']);
-        $this->assertEquals([],$parsedTransaction['out']);
+        $this->assertArrayHasKey('nftokenid',$parsedTransaction);
+        $this->assertArrayHasKey('direction',$parsedTransaction);
+        $this->assertEquals(null,$parsedTransaction['nftokenid']);
+        $this->assertEquals('UNKNOWN',$parsedTransaction['direction']);
     }
 }

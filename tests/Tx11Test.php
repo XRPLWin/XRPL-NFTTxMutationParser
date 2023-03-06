@@ -14,7 +14,7 @@ final class Tx11Test extends TestCase
     /**
      * 
      */
-    public function testNFTokenAcceptSellOfferByAccepter()
+    public function testNFTokenAcceptSellOfferByAccepter() //accepter/buyer
     {
         $transaction = file_get_contents(__DIR__.'/fixtures/tx11.json');
         $transaction = \json_decode($transaction);
@@ -22,31 +22,30 @@ final class Tx11Test extends TestCase
         $NFTTxMutationParser = new NFTTxMutationParser($account, $transaction->result);
         $parsedTransaction = $NFTTxMutationParser->result();
         //dd($parsedTransaction);
-        $this->assertIsArray($parsedTransaction);
-        $this->assertEquals(2,count($parsedTransaction));
-        $this->assertArrayHasKey('in',$parsedTransaction);
-        $this->assertArrayHasKey('out',$parsedTransaction);
-        $this->assertEquals(['00082710704B411C4B1627649C1224A381B3AD9C2D8F5B7A53C2AF3000000095'],$parsedTransaction['in']);
-        $this->assertEquals([],$parsedTransaction['out']);
+
+        $this->assertArrayHasKey('nftokenid',$parsedTransaction);
+        $this->assertArrayHasKey('direction',$parsedTransaction);
+        $this->assertEquals('00082710704B411C4B1627649C1224A381B3AD9C2D8F5B7A53C2AF3000000095',$parsedTransaction['nftokenid']);
+        $this->assertEquals('IN',$parsedTransaction['direction']);
+
     }
 
     /**
      * 
      */
-    public function testNFTokenAcceptOfferByBuyer()
+    public function testNFTokenAcceptOfferBySeller()
     {
         $transaction = file_get_contents(__DIR__.'/fixtures/tx11.json');
         $transaction = \json_decode($transaction);
-        $account = "rJezoKZH1nKavjZfjQAAZwvNHR6jabDfek";
+        $account = "rBNkqEPXXzPtJs25yi1Q8SkLrBChdwsjrN";
         $NFTTxMutationParser = new NFTTxMutationParser($account, $transaction->result);
         $parsedTransaction = $NFTTxMutationParser->result();
         //dd($parsedTransaction);
-        $this->assertIsArray($parsedTransaction);
-        $this->assertEquals(2,count($parsedTransaction));
-        $this->assertArrayHasKey('in',$parsedTransaction);
-        $this->assertArrayHasKey('out',$parsedTransaction);
-        $this->assertEquals(['00082710704B411C4B1627649C1224A381B3AD9C2D8F5B7A53C2AF3000000095'],$parsedTransaction['in']);
-        $this->assertEquals([],$parsedTransaction['out']);
+
+        $this->assertArrayHasKey('nftokenid',$parsedTransaction);
+        $this->assertArrayHasKey('direction',$parsedTransaction);
+        $this->assertEquals('00082710704B411C4B1627649C1224A381B3AD9C2D8F5B7A53C2AF3000000095',$parsedTransaction['nftokenid']);
+        $this->assertEquals('OUT',$parsedTransaction['direction']);
     }
 
     public function testNFTokenAcceptOfferByOther()
@@ -58,10 +57,9 @@ final class Tx11Test extends TestCase
         $parsedTransaction = $NFTTxMutationParser->result();
         
         $this->assertIsArray($parsedTransaction);
-        $this->assertEquals(2,count($parsedTransaction));
-        $this->assertArrayHasKey('in',$parsedTransaction);
-        $this->assertArrayHasKey('out',$parsedTransaction);
-        $this->assertEquals([],$parsedTransaction['in']);
-        $this->assertEquals([],$parsedTransaction['out']);
+        $this->assertArrayHasKey('nftokenid',$parsedTransaction);
+        $this->assertArrayHasKey('direction',$parsedTransaction);
+        $this->assertEquals(null,$parsedTransaction['nftokenid']);
+        $this->assertEquals('UNKNOWN',$parsedTransaction['direction']);
     }
 }

@@ -18,13 +18,12 @@ final class Tx05Test extends TestCase
         $account = "rhpe8vRiZ8NvVn6MnFTwL2TxzMeCUhSeVQ";
         $NFTTxMutationParser = new NFTTxMutationParser($account, $transaction->result);
         $parsedTransaction = $NFTTxMutationParser->result();
-        
-        $this->assertIsArray($parsedTransaction);
-        $this->assertEquals(2,count($parsedTransaction));
-        $this->assertArrayHasKey('in',$parsedTransaction);
-        $this->assertArrayHasKey('out',$parsedTransaction);
-        $this->assertEquals([],$parsedTransaction['in']);
-        $this->assertEquals(['000800002138571C1D5416A14CD66740650DF2C319918B3616E5DA9D00000001'],$parsedTransaction['out']);
+
+        $this->assertArrayHasKey('nftokenid',$parsedTransaction);
+        $this->assertArrayHasKey('direction',$parsedTransaction);
+        $this->assertEquals('000800002138571C1D5416A14CD66740650DF2C319918B3616E5DA9D00000001',$parsedTransaction['nftokenid']);
+        $this->assertEquals('OUT',$parsedTransaction['direction']);
+      
     }
 
     public function testNFTokenBurnByOther()
@@ -36,10 +35,9 @@ final class Tx05Test extends TestCase
         $parsedTransaction = $NFTTxMutationParser->result();
         
         $this->assertIsArray($parsedTransaction);
-        $this->assertEquals(2,count($parsedTransaction));
-        $this->assertArrayHasKey('in',$parsedTransaction);
-        $this->assertArrayHasKey('out',$parsedTransaction);
-        $this->assertEquals([],$parsedTransaction['in']);
-        $this->assertEquals([],$parsedTransaction['out']);
+        $this->assertArrayHasKey('nftokenid',$parsedTransaction);
+        $this->assertArrayHasKey('direction',$parsedTransaction);
+        $this->assertEquals(null,$parsedTransaction['nftokenid']);
+        $this->assertEquals('UNKNOWN',$parsedTransaction['direction']);
     }
 }
