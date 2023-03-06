@@ -15,7 +15,6 @@ final class Tx10Test extends TestCase
     /**
      * This is buy offer by rsa614fckHaBjDpCcZNQqfvVFVPYZzPvE2, and rDuck4z5jdAJLDaRMwpc2xZhsCKqqTMRsr has accepted to sell.
      * In result rDuck4z5jdAJLDaRMwpc2xZhsCKqqTMRsr loses NFT.
-     * OK
      */
     public function testNFTokenAcceptBuyOfferByAccepter()
     {

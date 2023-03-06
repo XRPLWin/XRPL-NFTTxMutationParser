@@ -20,11 +20,11 @@ final class Tx04Test extends TestCase
         $NFTTxMutationParser = new NFTTxMutationParser($account, $transaction->result);
         $parsedTransaction = $NFTTxMutationParser->result();
 
+        $this->assertIsArray($parsedTransaction);
         $this->assertArrayHasKey('nftokenid',$parsedTransaction);
         $this->assertArrayHasKey('direction',$parsedTransaction);
         $this->assertEquals('0008C350CCA81EA449D7466E0D3BA2298D5DE0C8FD4796E700334AC200000000',$parsedTransaction['nftokenid']);
         $this->assertEquals('IN',$parsedTransaction['direction']);
-
     }
 
     public function testNFTokenMintListByOther()

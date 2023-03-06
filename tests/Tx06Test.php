@@ -20,6 +20,7 @@ final class Tx06Test extends TestCase
         $NFTTxMutationParser = new NFTTxMutationParser($account, $transaction->result);
         $parsedTransaction = $NFTTxMutationParser->result();
 
+        $this->assertIsArray($parsedTransaction);
         $this->assertArrayHasKey('nftokenid',$parsedTransaction);
         $this->assertArrayHasKey('direction',$parsedTransaction);
         $this->assertEquals('000800002138571C1D5416A14CD66740650DF2C319918B360000099A00000000',$parsedTransaction['nftokenid']);

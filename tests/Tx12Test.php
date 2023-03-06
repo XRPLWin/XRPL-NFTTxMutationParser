@@ -7,7 +7,6 @@ use XRPLWin\XRPLNFTTxMutatationParser\NFTTxMutationParser;
 
 /***
  * NFTokenAcceptOffer - Brokered trade
- * @see 
  */
 final class Tx12Test extends TestCase
 {
@@ -61,7 +60,7 @@ final class Tx12Test extends TestCase
 
     public function testNFTokenTradeByOther()
     {
-        $transaction = file_get_contents(__DIR__.'/fixtures/tx11.json');
+        $transaction = file_get_contents(__DIR__.'/fixtures/tx12.json');
         $transaction = \json_decode($transaction);
         $account = "rvYAfWj5gh67oV6fW32ZzP3Aw4Eubs59B";
         $NFTTxMutationParser = new NFTTxMutationParser($account, $transaction->result);
