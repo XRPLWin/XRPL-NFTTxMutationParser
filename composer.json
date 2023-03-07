@@ -1,6 +1,6 @@
 {
-    "name": "xrplwin/xrpl-txmutationparser",
-    "description": "Parse XRPL NFT transaction to context aware object providing list of affected NFTokenIDs.",
+    "name": "xrplwin/xrpl-nfttxmutationparser",
+    "description": "Parse XRPL NFT transaction to context aware object providing direction, token id and roles.",
     "keywords": ["xrpl", "composer", "package", "ripple", "rippled", "nft", "xrp", "transaction", "tx", "parser", "mutation", "perspective"],
     "license": "MIT",
     "type": "library",
