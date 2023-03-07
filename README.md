@@ -6,7 +6,15 @@
 
 ## Description
 
-- TODO
+Parses NFT XRPL Transaction (`NFTokenMint`, `NFTokenBurn`, `NFTokenAcceptOffer`, `NFTokenCancelOffer`, `NFTokenCreateOffer`) with account context and returns affected NFT, direction that NFT was transferred, minted or destroyed, and outputs roles referencing account has in specific transaction.
+
+With this parser you can find out what has happened with referencing account after transaction was executed. For example when token is minted - parser will output token ID and direction IN, this means referenced account was minter and new token is added to reference account ownership.
+
+What is checked:
+
+- **Token id** - affected token ID in question
+- **Token direction** - minted - IN, burned, OUT, sold - OUT, nought - IN
+- **Roles** - role of referencing account in this transaction, is it minter, burner, seller, buyer or broker
 
 ### Note
 
@@ -27,14 +35,45 @@ composer require xrplwin/xrpl-nfttxmutationparser
 ## Usage
 ```PHP
 use XRPLWin\XRPLNFTTxMutatationParser\NFTTxMutationParser;
-//TODO
+
+$txResult = [
+  "Account" => "rBcd.." //this is reference account
+  "Fee" => "1000",
+  //...
+];
+$parser = new NFTTxMutationParser("rA...", (object)$txResult);
+$parsedTransaction = $parser->result();
+
+print_r($parsedTransaction);
+
+/*
+Array
+(
+    [nftokenid] => 000827...
+    [direction] => IN
+    [roles] => Array
+    (
+        [0] => OWNER
+    )
+ )
+*/
 ```
 
 A sample response (as JSON):
 
 ```javascript
-//TODO
+{
+  nftokenid: "00082710B6961B76BA53FED0D85EF7267A4DBD6152FF1C06C11C4978000001DE",
+  direction: "IN",
+  roles: ["MINTER","OWNER"]
+}
 ```
+
+## Response cases
+
+`nftokenid` - can be `null` or NFTokenID string  
+`direction` - string one of `IN`,`OUT` or `UNKNOWN`  
+`roles` - array of roles reference account has in this transaction, posible roles: `UNKNOWN`, `OWNER`, `MINTER`, `BURNER`, `BUYER`, `SELLER`, `BROKER`
 
 ## Running tests
 Run all tests in "tests" directory.
