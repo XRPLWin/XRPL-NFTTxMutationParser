@@ -7,6 +7,7 @@ use XRPLWin\XRPLNFTTxMutatationParser\NFTTxMutationParser;
 
 /***
  * NFTokenAcceptOffer - Brokered trade
+ * @see 9FC1DF7828176894091E1DF1E92CB91433396844C3F549DDEC6CA54D31D8ACCE (testnet)
  */
 final class Tx12Test extends TestCase
 {
@@ -22,7 +23,7 @@ final class Tx12Test extends TestCase
         $this->assertArrayHasKey('direction',$parsedTransaction);
         $this->assertEquals(null,$parsedTransaction['nftokenid']);
         $this->assertEquals('UNKNOWN',$parsedTransaction['direction']);
-        $this->assertEquals('BROKER',$parsedTransaction['role']);
+        $this->assertEquals(['BROKER'],$parsedTransaction['roles']);
     }
 
     public function testNFTokenTradeBySeller()
@@ -37,7 +38,7 @@ final class Tx12Test extends TestCase
         $this->assertArrayHasKey('direction',$parsedTransaction);
         $this->assertEquals('000800FFB7896EF726023B37B8FC50B6D3623A464B2F883B0000099B00000000',$parsedTransaction['nftokenid']);
         $this->assertEquals('OUT',$parsedTransaction['direction']);
-        $this->assertEquals('SELLER',$parsedTransaction['role']);
+        $this->assertEquals(['SELLER'],$parsedTransaction['roles']); //ISSUER
     }
 
     public function testNFTokenTradeByBuyer()
@@ -52,8 +53,7 @@ final class Tx12Test extends TestCase
         $this->assertArrayHasKey('direction',$parsedTransaction);
         $this->assertEquals('000800FFB7896EF726023B37B8FC50B6D3623A464B2F883B0000099B00000000',$parsedTransaction['nftokenid']);
         $this->assertEquals('IN',$parsedTransaction['direction']);
-        $this->assertEquals('BUYER',$parsedTransaction['role']);
-
+        $this->assertEquals(['BUYER','OWNER'],$parsedTransaction['roles']); //new owner
     }
 
     public function testNFTokenTradeByOther()
@@ -69,6 +69,7 @@ final class Tx12Test extends TestCase
         $this->assertArrayHasKey('direction',$parsedTransaction);
         $this->assertEquals(null,$parsedTransaction['nftokenid']);
         $this->assertEquals('UNKNOWN',$parsedTransaction['direction']);
+        $this->assertEquals(['UNKNOWN'],$parsedTransaction['roles']);
     }
 
 

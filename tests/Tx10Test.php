@@ -28,7 +28,8 @@ final class Tx10Test extends TestCase
         $this->assertArrayHasKey('direction',$parsedTransaction);
         $this->assertEquals('00081702153AA708D64FF2E79DFE9D2D8E27845F9AB4E3C800DA2FC700003A2C',$parsedTransaction['nftokenid']);
         $this->assertEquals('OUT',$parsedTransaction['direction']);
-        $this->assertEquals('SELLER',$parsedTransaction['role']);
+        $this->assertEquals(['SELLER'],$parsedTransaction['roles']);
+        
     }
 
     /**
@@ -48,7 +49,23 @@ final class Tx10Test extends TestCase
         $this->assertArrayHasKey('direction',$parsedTransaction);
         $this->assertEquals('00081702153AA708D64FF2E79DFE9D2D8E27845F9AB4E3C800DA2FC700003A2C',$parsedTransaction['nftokenid']);
         $this->assertEquals('IN',$parsedTransaction['direction']);
-        $this->assertEquals('BUYER',$parsedTransaction['role']);
+        $this->assertEquals(['BUYER','OWNER'],$parsedTransaction['roles']); //this account is new owner, state after finalizing transaction
+    }
+
+    public function testNFTokenAcceptOfferByIssuer()
+    {
+        $transaction = file_get_contents(__DIR__.'/fixtures/tx10.json');
+        $transaction = \json_decode($transaction);
+        $account = "rpAETGuhJW5ZYfg3PdsCTELv4ho147AoE9";
+        $NFTTxMutationParser = new NFTTxMutationParser($account, $transaction->result);
+        $parsedTransaction = $NFTTxMutationParser->result();
+        
+
+        $this->assertArrayHasKey('nftokenid',$parsedTransaction);
+        $this->assertArrayHasKey('direction',$parsedTransaction);
+        $this->assertEquals(null,$parsedTransaction['nftokenid']);
+        $this->assertEquals('UNKNOWN',$parsedTransaction['direction']);
+        $this->assertEquals(['UNKNOWN'],$parsedTransaction['roles']); //ISSUER
     }
 
     public function testNFTokenAcceptOfferByOther()
@@ -64,6 +81,6 @@ final class Tx10Test extends TestCase
         $this->assertArrayHasKey('direction',$parsedTransaction);
         $this->assertEquals(null,$parsedTransaction['nftokenid']);
         $this->assertEquals('UNKNOWN',$parsedTransaction['direction']);
-        $this->assertEquals('UNKNOWN',$parsedTransaction['role']);
+        $this->assertEquals(['UNKNOWN'],$parsedTransaction['roles']);
     }
 }

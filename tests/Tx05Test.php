@@ -24,7 +24,7 @@ final class Tx05Test extends TestCase
         $this->assertArrayHasKey('direction',$parsedTransaction);
         $this->assertEquals('000800002138571C1D5416A14CD66740650DF2C319918B3616E5DA9D00000001',$parsedTransaction['nftokenid']);
         $this->assertEquals('OUT',$parsedTransaction['direction']);
-        $this->assertEquals('BURNER',$parsedTransaction['role']);
+        $this->assertEquals(['BURNER','OWNER'],$parsedTransaction['roles']);
     }
 
     public function testNFTokenBurnByOther()
@@ -40,6 +40,6 @@ final class Tx05Test extends TestCase
         $this->assertArrayHasKey('direction',$parsedTransaction);
         $this->assertEquals(null,$parsedTransaction['nftokenid']);
         $this->assertEquals('UNKNOWN',$parsedTransaction['direction']);
-        $this->assertEquals('UNKNOWN',$parsedTransaction['role']);
+        $this->assertEquals(['UNKNOWN'],$parsedTransaction['roles']);
     }
 }

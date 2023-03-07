@@ -15,12 +15,12 @@ class NFTTxMutationParser
   const ROLE_UNKNOWN    = 'UNKNOWN';
   const ROLE_OWNER      = 'OWNER';
 
-  # Mint (minter,owner,unknown)
+  # Mint (minter, owner, unknown)
   const ROLE_MINTER     = 'MINTER';
-  # Burn (burner,owner,unknown)
+  # Burn (burner, owner, unknown)
   const ROLE_BURNER     = 'BURNER';
   
-  # Trade (buyer,seller,broker,unknown)
+  # Trade (buyer, seller, broker, owner (new owner), unknown)
   const ROLE_BUYER      = 'BUYER';
   const ROLE_SELLER     = 'SELLER';
   const ROLE_BROKER     = 'BROKER';
@@ -29,7 +29,7 @@ class NFTTxMutationParser
   private readonly \stdClass $tx;
   private ?string $result_nftokenid = null;
   private string $result_direction = self::DIRECTION_UNKNOWN;
-  private string $result_role = self::ROLE_UNKNOWN;
+  private array $result_role = [];
 
   public function __construct(string $reference_account, \stdClass $tx)
   {
@@ -56,16 +56,20 @@ class NFTTxMutationParser
   private function handleNFTokenMint(): void
   {
     $affected_account = $this->tx->Account;
-
+    
     if(isset($this->tx->Issuer))
       $affected_account = $this->tx->Issuer;
     
     # ROLE START
     if($this->account == $this->tx->Account)
-        $this->result_role = self::ROLE_MINTER;
+      $this->result_role[] = self::ROLE_MINTER;
+        
     if(isset($this->tx->Issuer)) {
       if($this->account == $this->tx->Issuer)
-        $this->result_role = self::ROLE_OWNER;
+        $this->result_role[] = self::ROLE_OWNER;
+    } else {
+      if($this->account == $this->tx->Account)
+        $this->result_role[] = self::ROLE_OWNER;
     }
     # ROLE END
     
@@ -88,10 +92,14 @@ class NFTTxMutationParser
 
     # ROLE START
     if($this->account == $this->tx->Account)
-        $this->result_role = self::ROLE_BURNER;
+        $this->result_role[] = self::ROLE_BURNER;
+
     if(isset($this->tx->Owner)) {
       if($this->account == $this->tx->Owner)
-        $this->result_role = self::ROLE_OWNER;
+        $this->result_role[] = self::ROLE_OWNER;
+    } else {
+      if($this->account == $this->tx->Account)
+        $this->result_role[] = self::ROLE_OWNER;
     }
     # ROLE END
     
@@ -117,13 +125,15 @@ class NFTTxMutationParser
       //This is buy offer, Account has created NFTokenSellOffer so Account is buyer
       $context = 'BUYER';
       $affected_account = $this->tx->Account;
+      if($this->account == $affected_account)
+            $this->result_role = [self::ROLE_OWNER];
     } elseif(isset($this->tx->NFTokenBuyOffer) && isset($this->tx->NFTokenSellOffer)) { //BROKERED
       $context = 'BROKER';
       $affected_account = null;
     } else {
       throw new \Exception('Not implemented case in handleNFTokenAcceptOffer');
     }
-
+    
     //Extract NFT in question (seller or buyer context only)
     //Extracted NFTokenID is always same in all offers in meta
     $data = $this->extractDataFromDeletedOfferInMeta();
@@ -131,25 +141,33 @@ class NFTTxMutationParser
 
     # Perpective flipping in case when reference account is not initiator of NFTokenAcceptOffer
     if($affected_account != $this->account) {
-
+      
       //If this is a buy offer, extracted account is BUYER
       if($context == 'SELLER') {
           $affected_account = $data['account'];
           $context = 'BUYER'; //flip perspective
+          if($this->account == $affected_account)
+            $this->result_role = [self::ROLE_OWNER];
       } elseif($context == 'BUYER') {
           $affected_account = $data['account'];
           $context = 'SELLER'; //flip perspective
       } elseif ($context == 'BROKER') {
+        
         //We have two offers, sell offer and buy offer, extract appropriate
         $data = $this->extractDataFromDeletedOfferInMeta_PriorityReferenceAccount();
+        
         if($this->tx->NFTokenBuyOffer == $data['LedgerIndex']) {
+          $affected_account = $data['account'];
           $context = 'BUYER';
+          if($this->account == $affected_account)
+            $this->result_role = [self::ROLE_OWNER];
         } elseif($this->tx->NFTokenSellOffer == $data['LedgerIndex']) {
+          $affected_account = $data['account'];
           $context = 'SELLER';
         } else {
-          $this->result_role = self::ROLE_BROKER;
+          if($this->account == $this->tx->Account)
+            $this->result_role = [self::ROLE_BROKER];
         }
-        $affected_account = $data['account'];
       }
     }
     
@@ -165,10 +183,10 @@ class NFTTxMutationParser
 
     if($context == 'SELLER') {
       $this->result_direction = self::DIRECTION_OUT;
-      $this->result_role = self::ROLE_SELLER;
+      $this->result_role[] = self::ROLE_SELLER;
     } elseif($context == 'BUYER') {
       $this->result_direction = self::DIRECTION_IN;
-      $this->result_role = self::ROLE_BUYER;
+      $this->result_role[] = self::ROLE_BUYER;
     }
   }
 
@@ -314,10 +332,12 @@ class NFTTxMutationParser
 
   public function result(): array
   {
+    $roles = count($this->result_role) ? $this->result_role : [self::ROLE_UNKNOWN];
+    \sort($roles,SORT_REGULAR);
     return [
       'nftokenid' => $this->result_nftokenid,
       'direction' => $this->result_direction,
-      'role'      => $this->result_role, 
+      'roles'      => $roles
     ];
   }
 }

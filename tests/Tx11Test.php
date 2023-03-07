@@ -23,7 +23,7 @@ final class Tx11Test extends TestCase
         $this->assertArrayHasKey('direction',$parsedTransaction);
         $this->assertEquals('00082710704B411C4B1627649C1224A381B3AD9C2D8F5B7A53C2AF3000000095',$parsedTransaction['nftokenid']);
         $this->assertEquals('IN',$parsedTransaction['direction']);
-        $this->assertEquals('BUYER',$parsedTransaction['role']);
+        $this->assertEquals(['BUYER','OWNER'],$parsedTransaction['roles']);
     }
 
     public function testNFTokenAcceptOfferBySeller()
@@ -38,7 +38,7 @@ final class Tx11Test extends TestCase
         $this->assertArrayHasKey('direction',$parsedTransaction);
         $this->assertEquals('00082710704B411C4B1627649C1224A381B3AD9C2D8F5B7A53C2AF3000000095',$parsedTransaction['nftokenid']);
         $this->assertEquals('OUT',$parsedTransaction['direction']);
-        $this->assertEquals('SELLER',$parsedTransaction['role']);
+        $this->assertEquals(['SELLER'],$parsedTransaction['roles']);
     }
 
     public function testNFTokenAcceptOfferByOther()
@@ -54,6 +54,6 @@ final class Tx11Test extends TestCase
         $this->assertArrayHasKey('direction',$parsedTransaction);
         $this->assertEquals(null,$parsedTransaction['nftokenid']);
         $this->assertEquals('UNKNOWN',$parsedTransaction['direction']);
-        $this->assertEquals('UNKNOWN',$parsedTransaction['role']);
+        $this->assertEquals(['UNKNOWN'],$parsedTransaction['roles']);
     }
 }

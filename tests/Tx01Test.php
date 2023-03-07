@@ -24,7 +24,7 @@ final class Tx01Test extends TestCase
         $this->assertArrayHasKey('direction',$parsedTransaction);
         $this->assertEquals('00082710B6961B76BA53FED0D85EF7267A4DBD6152FF1C06C11C4978000001DE',$parsedTransaction['nftokenid']);
         $this->assertEquals('IN',$parsedTransaction['direction']);
-        $this->assertEquals('OWNER',$parsedTransaction['role']);
+        $this->assertEquals(['OWNER'],$parsedTransaction['roles']);
     }
 
     public function testNFTokenMintListBySender()
@@ -40,7 +40,7 @@ final class Tx01Test extends TestCase
         $this->assertArrayHasKey('direction',$parsedTransaction);
         $this->assertEquals(null,$parsedTransaction['nftokenid']);
         $this->assertEquals('UNKNOWN',$parsedTransaction['direction']);
-        $this->assertEquals('MINTER',$parsedTransaction['role']);
+        $this->assertEquals(['MINTER'],$parsedTransaction['roles']);
     }
 
     public function testNFTokenMintListByOther()
@@ -56,6 +56,6 @@ final class Tx01Test extends TestCase
         $this->assertArrayHasKey('direction',$parsedTransaction);
         $this->assertEquals(null,$parsedTransaction['nftokenid']);
         $this->assertEquals('UNKNOWN',$parsedTransaction['direction']);
-        $this->assertEquals('UNKNOWN',$parsedTransaction['role']);
+        $this->assertEquals(['UNKNOWN'],$parsedTransaction['roles']);
     }
 }
