@@ -13,7 +13,7 @@ With this parser you can find out what has happened with referencing account aft
 What is checked:
 
 - **Token id** - affected token ID in question
-- **Token direction** - minted - IN, burned, OUT, sold - OUT, nought - IN
+- **Token direction** - minted - IN, burned, OUT, sold - OUT, bought - IN
 - **Roles** - role of referencing account in this transaction, is it minter, burner, seller, buyer or broker
 
 ### Note
