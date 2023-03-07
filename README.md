@@ -37,11 +37,14 @@ composer require xrplwin/xrpl-nfttxmutationparser
 use XRPLWin\XRPLNFTTxMutatationParser\NFTTxMutationParser;
 
 $txResult = [
-  "Account" => "rBcd.." //this is reference account
+  "Account" => "rBcd.." 
   "Fee" => "1000",
   //...
 ];
-$parser = new NFTTxMutationParser("rA...", (object)$txResult);
+$parser = new NFTTxMutationParser(
+  "rA...", //This is reference account
+  (object)$txResult //This is transaction result
+);
 $parsedTransaction = $parser->result();
 
 print_r($parsedTransaction);
