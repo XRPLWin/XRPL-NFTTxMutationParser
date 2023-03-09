@@ -4,6 +4,10 @@
 
 # XRPL NFT Transaction Mutation Parser for PHP
 
+## Demo
+
+See this in action on [XRPLWin Playground](https://playground.xrpl.win/play/xrpl-nft-transaction-mutation-parser)
+
 ## Description
 
 Parses NFT XRPL Transaction (`NFTokenMint`, `NFTokenBurn`, `NFTokenAcceptOffer`, `NFTokenCancelOffer`, `NFTokenCreateOffer`) with account context and returns affected NFT, direction that NFT was transferred, minted or destroyed, and outputs roles referencing account has in specific transaction.
