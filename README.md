@@ -79,7 +79,7 @@ print_r($parsedTransaction);
 
 | Key  | Type | TxType |
 | ------------- | ------------- | ------------- |
-| nft  | ?String  | NFTokenID  present in types: `NFTokenMint`, `NFTokenBurn`, `NFTokenAcceptOffer`, `NFTokenCreateOffer`  |
+| nft  | ?String  | NFTokenID always present in types: `NFTokenMint`, `NFTokenBurn`, `NFTokenAcceptOffer`, `NFTokenCreateOffer`  |
 | ref.account  | String  | Reference account |
 | ref.nft  | ?String  | NFTokenID which changed ownership depending on direction for reference account |
 | ref.direction  | String  | one of `"IN"`,`"OUT"`,`"UNKNOWN"` |
