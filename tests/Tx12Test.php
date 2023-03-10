@@ -72,7 +72,7 @@ final class Tx12Test extends TestCase
         $account = "rvYAfWj5gh67oV6fW32ZzP3Aw4Eubs59B";
         $NFTTxMutationParser = new NFTTxMutationParser($account, $transaction->result);
         $parsedTransaction = $NFTTxMutationParser->result();
-        dd($parsedTransaction);
+
         $this->assertIsArray($parsedTransaction);
 
         $this->assertEquals('BROKERED',$parsedTransaction['context']);
