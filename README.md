@@ -82,7 +82,7 @@ print_r($parsedTransaction);
 | nft  | ?String  | NFTokenID always present in types: `NFTokenMint`, `NFTokenBurn`, `NFTokenAcceptOffer`, `NFTokenCreateOffer`  |
 | ref.account  | String  | Reference account |
 | ref.nft  | ?String  | NFTokenID which changed ownership depending on direction for reference account |
-| ref.direction  | String  | one of `"IN"`,`"OUT"`,`"UNKNOWN"` |
+| ref.direction  | String  | One of: `"IN"`,`"OUT"`,`"UNKNOWN"` |
 | ref.roles  | Array  | Array of roles reference account has in this transaction, possible roles: `"UNKNOWN"`, `"OWNER"`, `"MINTER"`, `"BURNER"`, `"BUYER"`, `"SELLER"`, `"BROKER"`  |
 
 ## Running tests
