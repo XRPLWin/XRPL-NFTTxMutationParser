@@ -20,11 +20,12 @@ final class Tx01Test extends TestCase
         $parsedTransaction = $NFTTxMutationParser->result();
 
         $this->assertIsArray($parsedTransaction);
-        $this->assertArrayHasKey('nftokenid',$parsedTransaction);
-        $this->assertArrayHasKey('direction',$parsedTransaction);
-        $this->assertEquals('00082710B6961B76BA53FED0D85EF7267A4DBD6152FF1C06C11C4978000001DE',$parsedTransaction['nftokenid']);
-        $this->assertEquals('IN',$parsedTransaction['direction']);
-        $this->assertEquals(['OWNER'],$parsedTransaction['roles']);
+        $this->assertEquals($account,$parsedTransaction['ref']['account']);
+
+        $this->assertEquals('00082710B6961B76BA53FED0D85EF7267A4DBD6152FF1C06C11C4978000001DE',$parsedTransaction['nft']);
+        $this->assertEquals('00082710B6961B76BA53FED0D85EF7267A4DBD6152FF1C06C11C4978000001DE',$parsedTransaction['ref']['nft']);
+        $this->assertEquals('IN',$parsedTransaction['ref']['direction']);
+        $this->assertEquals(['OWNER'],$parsedTransaction['ref']['roles']);
     }
 
     public function testNFTokenMintListBySender()
@@ -36,11 +37,12 @@ final class Tx01Test extends TestCase
         $parsedTransaction = $NFTTxMutationParser->result();
         
         $this->assertIsArray($parsedTransaction);
-        $this->assertArrayHasKey('nftokenid',$parsedTransaction);
-        $this->assertArrayHasKey('direction',$parsedTransaction);
-        $this->assertEquals(null,$parsedTransaction['nftokenid']);
-        $this->assertEquals('UNKNOWN',$parsedTransaction['direction']);
-        $this->assertEquals(['MINTER'],$parsedTransaction['roles']);
+        $this->assertEquals($account,$parsedTransaction['ref']['account']);
+
+        $this->assertEquals('00082710B6961B76BA53FED0D85EF7267A4DBD6152FF1C06C11C4978000001DE',$parsedTransaction['nft']);
+        $this->assertEquals(null,$parsedTransaction['ref']['nft']);
+        $this->assertEquals('UNKNOWN',$parsedTransaction['ref']['direction']);
+        $this->assertEquals(['MINTER'],$parsedTransaction['ref']['roles']);
     }
 
     public function testNFTokenMintListByOther()
@@ -52,10 +54,10 @@ final class Tx01Test extends TestCase
         $parsedTransaction = $NFTTxMutationParser->result();
 
         $this->assertIsArray($parsedTransaction);
-        $this->assertArrayHasKey('nftokenid',$parsedTransaction);
-        $this->assertArrayHasKey('direction',$parsedTransaction);
-        $this->assertEquals(null,$parsedTransaction['nftokenid']);
-        $this->assertEquals('UNKNOWN',$parsedTransaction['direction']);
-        $this->assertEquals(['UNKNOWN'],$parsedTransaction['roles']);
+
+        $this->assertEquals('00082710B6961B76BA53FED0D85EF7267A4DBD6152FF1C06C11C4978000001DE',$parsedTransaction['nft']);
+        $this->assertEquals(null,$parsedTransaction['ref']['nft']);
+        $this->assertEquals('UNKNOWN',$parsedTransaction['ref']['direction']);
+        $this->assertEquals(['UNKNOWN'],$parsedTransaction['ref']['roles']);
     }
 }

@@ -27,9 +27,14 @@ class NFTTxMutationParser
 
   private readonly string $account;
   private readonly \stdClass $tx;
-  private ?string $result_nftokenid = null;
-  private string $result_direction = self::DIRECTION_UNKNOWN;
-  private array $result_role = [];
+
+  # Result variables
+  private ?string $nft = null;
+
+  # Reference account result variables
+  private ?string $ref_nft = null;
+  private string $ref_direction = self::DIRECTION_UNKNOWN;
+  private array $ref_roles = [];
 
   public function __construct(string $reference_account, \stdClass $tx)
   {
@@ -51,6 +56,27 @@ class NFTTxMutationParser
         $this->handleNFTokenAcceptOffer();
         break;
     }
+    $this->nft = $this->ref_nft;
+
+    if($this->nft === null) {
+
+      // Extract subject NFTokenID:
+
+      switch($this->tx->TransactionType) {
+        case 'NFTokenMint':
+          $this->nft = $this->extractAffectedNFTokenID();
+          break;
+        case 'NFTokenBurn':
+          $this->nft = $this->extractAffectedNFTokenID();
+          break;
+        case 'NFTokenAcceptOffer':
+          $this->nft = $this->extractDataFromDeletedOfferInMeta()['NFTokenID'];
+          break;
+        case 'NFTokenCreateOffer':
+          $this->nft = $this->tx->NFTokenID;
+          break;
+      }
+    }
   }
 
   private function handleNFTokenMint(): void
@@ -62,14 +88,14 @@ class NFTTxMutationParser
     
     # ROLE START
     if($this->account == $this->tx->Account)
-      $this->result_role[] = self::ROLE_MINTER;
+      $this->ref_roles[] = self::ROLE_MINTER;
         
     if(isset($this->tx->Issuer)) {
       if($this->account == $this->tx->Issuer)
-        $this->result_role[] = self::ROLE_OWNER;
+        $this->ref_roles[] = self::ROLE_OWNER;
     } else {
       if($this->account == $this->tx->Account)
-        $this->result_role[] = self::ROLE_OWNER;
+        $this->ref_roles[] = self::ROLE_OWNER;
     }
     # ROLE END
     
@@ -77,10 +103,9 @@ class NFTTxMutationParser
     if($affected_account != $this->account)
       return;
 
-    $this->result_direction = self::DIRECTION_IN;
+    $this->ref_direction = self::DIRECTION_IN;
     
-    $this->result_nftokenid = $this->extractAffectedNFTokenID();
-    //dd($this->result_nftokenid);
+    $this->ref_nft = $this->extractAffectedNFTokenID();
   }
 
   private function handleNFTokenBurn(): void
@@ -92,14 +117,14 @@ class NFTTxMutationParser
 
     # ROLE START
     if($this->account == $this->tx->Account)
-        $this->result_role[] = self::ROLE_BURNER;
+        $this->ref_roles[] = self::ROLE_BURNER;
 
     if(isset($this->tx->Owner)) {
       if($this->account == $this->tx->Owner)
-        $this->result_role[] = self::ROLE_OWNER;
+        $this->ref_roles[] = self::ROLE_OWNER;
     } else {
       if($this->account == $this->tx->Account)
-        $this->result_role[] = self::ROLE_OWNER;
+        $this->ref_roles[] = self::ROLE_OWNER;
     }
     # ROLE END
     
@@ -107,9 +132,9 @@ class NFTTxMutationParser
     if($affected_account != $this->account)
       return;
 
-    $this->result_direction = self::DIRECTION_OUT;
+    $this->ref_direction = self::DIRECTION_OUT;
 
-    $this->result_nftokenid = $this->extractAffectedNFTokenID();
+    $this->ref_nft = $this->extractAffectedNFTokenID();
   }
 
   private function handleNFTokenAcceptOffer(): void
@@ -126,7 +151,7 @@ class NFTTxMutationParser
       $context = 'BUYER';
       $affected_account = $this->tx->Account;
       if($this->account == $affected_account)
-            $this->result_role = [self::ROLE_OWNER];
+            $this->ref_roles = [self::ROLE_OWNER];
     } elseif(isset($this->tx->NFTokenBuyOffer) && isset($this->tx->NFTokenSellOffer)) { //BROKERED
       $context = 'BROKER';
       $affected_account = null;
@@ -147,7 +172,7 @@ class NFTTxMutationParser
           $affected_account = $data['account'];
           $context = 'BUYER'; //flip perspective
           if($this->account == $affected_account)
-            $this->result_role = [self::ROLE_OWNER];
+            $this->ref_roles = [self::ROLE_OWNER];
       } elseif($context == 'BUYER') {
           $affected_account = $data['account'];
           $context = 'SELLER'; //flip perspective
@@ -160,13 +185,13 @@ class NFTTxMutationParser
           $affected_account = $data['account'];
           $context = 'BUYER';
           if($this->account == $affected_account)
-            $this->result_role = [self::ROLE_OWNER];
+            $this->ref_roles = [self::ROLE_OWNER];
         } elseif($this->tx->NFTokenSellOffer == $data['LedgerIndex']) {
           $affected_account = $data['account'];
           $context = 'SELLER';
         } else {
           if($this->account == $this->tx->Account)
-            $this->result_role = [self::ROLE_BROKER];
+            $this->ref_roles = [self::ROLE_BROKER];
         }
       }
     }
@@ -179,14 +204,14 @@ class NFTTxMutationParser
     if($affected_account != $this->account)
       return;
 
-    $this->result_nftokenid = $NFTokenID;
+    $this->ref_nft = $NFTokenID;
 
     if($context == 'SELLER') {
-      $this->result_direction = self::DIRECTION_OUT;
-      $this->result_role[] = self::ROLE_SELLER;
+      $this->ref_direction = self::DIRECTION_OUT;
+      $this->ref_roles[] = self::ROLE_SELLER;
     } elseif($context == 'BUYER') {
-      $this->result_direction = self::DIRECTION_IN;
-      $this->result_role[] = self::ROLE_BUYER;
+      $this->ref_direction = self::DIRECTION_IN;
+      $this->ref_roles[] = self::ROLE_BUYER;
     }
   }
 
@@ -332,12 +357,19 @@ class NFTTxMutationParser
 
   public function result(): array
   {
-    $roles = count($this->result_role) ? $this->result_role : [self::ROLE_UNKNOWN];
+    $roles = count($this->ref_roles) ? $this->ref_roles : [self::ROLE_UNKNOWN];
     \sort($roles,SORT_REGULAR);
     return [
-      'nftokenid' => $this->result_nftokenid,
-      'direction' => $this->result_direction,
-      'roles'      => $roles
+      'nft' => $this->nft,
+      'ref' => [
+        'account' => $this->account,
+        'nft' => $this->ref_nft,
+        'direction' => $this->ref_direction,
+        'roles'      => $roles
+      ]
+      //'nftokenid' => $this->ref_nft,
+      //'direction' => $this->ref_direction,
+      //'roles'      => $roles
     ];
   }
 }

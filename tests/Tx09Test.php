@@ -18,13 +18,15 @@ final class Tx09Test extends TestCase
         $account = "rnkmrTjpPTnVHkWCkVHLLVpspLKhyBCPm5";
         $NFTTxMutationParser = new NFTTxMutationParser($account, $transaction->result);
         $parsedTransaction = $NFTTxMutationParser->result();
-        
+
         $this->assertIsArray($parsedTransaction);
-        $this->assertArrayHasKey('nftokenid',$parsedTransaction);
-        $this->assertArrayHasKey('direction',$parsedTransaction);
-        $this->assertEquals(null,$parsedTransaction['nftokenid']);
-        $this->assertEquals('UNKNOWN',$parsedTransaction['direction']);
-        $this->assertEquals(['UNKNOWN'],$parsedTransaction['roles']);
+        $this->assertEquals($account,$parsedTransaction['ref']['account']);
+
+        $this->assertEquals(null,$parsedTransaction['nft']);
+        $this->assertEquals(null,$parsedTransaction['ref']['nft']);
+        $this->assertEquals('UNKNOWN',$parsedTransaction['ref']['direction']);
+        $this->assertEquals(['UNKNOWN'],$parsedTransaction['ref']['roles']);
+
     }
 
     public function testNFTokenCancelOfferByOther()
@@ -36,10 +38,11 @@ final class Tx09Test extends TestCase
         $parsedTransaction = $NFTTxMutationParser->result();
         
         $this->assertIsArray($parsedTransaction);
-        $this->assertArrayHasKey('nftokenid',$parsedTransaction);
-        $this->assertArrayHasKey('direction',$parsedTransaction);
-        $this->assertEquals(null,$parsedTransaction['nftokenid']);
-        $this->assertEquals('UNKNOWN',$parsedTransaction['direction']);
-        $this->assertEquals(['UNKNOWN'],$parsedTransaction['roles']);
+        $this->assertEquals($account,$parsedTransaction['ref']['account']);
+
+        $this->assertEquals(null,$parsedTransaction['nft']);
+        $this->assertEquals(null,$parsedTransaction['ref']['nft']);
+        $this->assertEquals('UNKNOWN',$parsedTransaction['ref']['direction']);
+        $this->assertEquals(['UNKNOWN'],$parsedTransaction['ref']['roles']);
     }
 }

@@ -21,11 +21,11 @@ final class Tx04Test extends TestCase
         $parsedTransaction = $NFTTxMutationParser->result();
 
         $this->assertIsArray($parsedTransaction);
-        $this->assertArrayHasKey('nftokenid',$parsedTransaction);
-        $this->assertArrayHasKey('direction',$parsedTransaction);
-        $this->assertEquals('0008C350CCA81EA449D7466E0D3BA2298D5DE0C8FD4796E700334AC200000000',$parsedTransaction['nftokenid']);
-        $this->assertEquals('IN',$parsedTransaction['direction']);
-        $this->assertEquals(['MINTER','OWNER'],$parsedTransaction['roles']);
+
+        $this->assertEquals('0008C350CCA81EA449D7466E0D3BA2298D5DE0C8FD4796E700334AC200000000',$parsedTransaction['nft']);
+        $this->assertEquals('0008C350CCA81EA449D7466E0D3BA2298D5DE0C8FD4796E700334AC200000000',$parsedTransaction['ref']['nft']);
+        $this->assertEquals('IN',$parsedTransaction['ref']['direction']);
+        $this->assertEquals(['MINTER','OWNER'],$parsedTransaction['ref']['roles']);
     }
 
     public function testNFTokenMintListByOther()
@@ -35,12 +35,11 @@ final class Tx04Test extends TestCase
         $account = "rvYAfWj5gh67oV6fW32ZzP3Aw4Eubs59B";
         $NFTTxMutationParser = new NFTTxMutationParser($account, $transaction->result);
         $parsedTransaction = $NFTTxMutationParser->result();
+
+        $this->assertEquals('0008C350CCA81EA449D7466E0D3BA2298D5DE0C8FD4796E700334AC200000000',$parsedTransaction['nft']);
+        $this->assertEquals(null,$parsedTransaction['ref']['nft']);
+        $this->assertEquals('UNKNOWN',$parsedTransaction['ref']['direction']);
+        $this->assertEquals(['UNKNOWN'],$parsedTransaction['ref']['roles']);
         
-        $this->assertIsArray($parsedTransaction);
-        $this->assertArrayHasKey('nftokenid',$parsedTransaction);
-        $this->assertArrayHasKey('direction',$parsedTransaction);
-        $this->assertEquals(null,$parsedTransaction['nftokenid']);
-        $this->assertEquals('UNKNOWN',$parsedTransaction['direction']);
-        $this->assertEquals(['UNKNOWN'],$parsedTransaction['roles']);
     }
 }

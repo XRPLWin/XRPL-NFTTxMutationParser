@@ -20,11 +20,11 @@ final class Tx05Test extends TestCase
         $parsedTransaction = $NFTTxMutationParser->result();
 
         $this->assertIsArray($parsedTransaction);
-        $this->assertArrayHasKey('nftokenid',$parsedTransaction);
-        $this->assertArrayHasKey('direction',$parsedTransaction);
-        $this->assertEquals('000800002138571C1D5416A14CD66740650DF2C319918B3616E5DA9D00000001',$parsedTransaction['nftokenid']);
-        $this->assertEquals('OUT',$parsedTransaction['direction']);
-        $this->assertEquals(['BURNER','OWNER'],$parsedTransaction['roles']);
+
+        $this->assertEquals('000800002138571C1D5416A14CD66740650DF2C319918B3616E5DA9D00000001',$parsedTransaction['nft']);
+        $this->assertEquals('000800002138571C1D5416A14CD66740650DF2C319918B3616E5DA9D00000001',$parsedTransaction['ref']['nft']);
+        $this->assertEquals('OUT',$parsedTransaction['ref']['direction']);
+        $this->assertEquals(['BURNER','OWNER'],$parsedTransaction['ref']['roles']);
     }
 
     public function testNFTokenBurnByOther()
@@ -34,12 +34,13 @@ final class Tx05Test extends TestCase
         $account = "rvYAfWj5gh67oV6fW32ZzP3Aw4Eubs59B";
         $NFTTxMutationParser = new NFTTxMutationParser($account, $transaction->result);
         $parsedTransaction = $NFTTxMutationParser->result();
-        
+
         $this->assertIsArray($parsedTransaction);
-        $this->assertArrayHasKey('nftokenid',$parsedTransaction);
-        $this->assertArrayHasKey('direction',$parsedTransaction);
-        $this->assertEquals(null,$parsedTransaction['nftokenid']);
-        $this->assertEquals('UNKNOWN',$parsedTransaction['direction']);
-        $this->assertEquals(['UNKNOWN'],$parsedTransaction['roles']);
+
+        $this->assertEquals('000800002138571C1D5416A14CD66740650DF2C319918B3616E5DA9D00000001',$parsedTransaction['nft']);
+        $this->assertEquals(null,$parsedTransaction['ref']['nft']);
+        $this->assertEquals('UNKNOWN',$parsedTransaction['ref']['direction']);
+        $this->assertEquals(['UNKNOWN'],$parsedTransaction['ref']['roles']);
+        
     }
 }

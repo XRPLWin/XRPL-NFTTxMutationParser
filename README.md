@@ -41,12 +41,12 @@ composer require xrplwin/xrpl-nfttxmutationparser
 use XRPLWin\XRPLNFTTxMutatationParser\NFTTxMutationParser;
 
 $txResult = [
-  "Account" => "rBcd.." 
+  "Account" => "rBcd..." 
   "Fee" => "1000",
   //...
 ];
 $parser = new NFTTxMutationParser(
-  "rA...", //This is reference account
+  "rAbc...", //This is reference account
   (object)$txResult //This is transaction result
 );
 $parsedTransaction = $parser->result();
@@ -54,33 +54,36 @@ $parsedTransaction = $parser->result();
 print_r($parsedTransaction);
 
 /*
-Array
-(
-    [nftokenid] => 000827...
-    [direction] => IN
-    [roles] => Array
-    (
-        [0] => OWNER
-    )
- )
+┐
+├ Output for $parsedTransaction:
+├ Array (
+├     [nft] => 00082710...        
+├     [ref] => Array
+├         (
+├             [account] => rAbc...  
+├             [nft] => 00082710...
+├             [direction] => IN
+├             [roles] => Array
+├                 (
+├                     [0] => OWNER
+├                 )
+├
+├         )
+├
+├ )
+┴
 */
-```
-
-A sample response (as JSON):
-
-```javascript
-{
-  nftokenid: "00082710B6961B76BA53FED0D85EF7267A4DBD6152FF1C06C11C4978000001DE",
-  direction: "IN",
-  roles: ["MINTER","OWNER"]
-}
 ```
 
 ## Response cases
 
-`nftokenid` - can be `null` or NFTokenID string  
-`direction` - string one of `IN`,`OUT` or `UNKNOWN`  
-`roles` - array of roles reference account has in this transaction, posible roles: `UNKNOWN`, `OWNER`, `MINTER`, `BURNER`, `BUYER`, `SELLER`, `BROKER`
+| Key  | Type | TxType |
+| ------------- | ------------- | ------------- |
+| `nft`  | ?String  | NFTokenID always in types: `NFTokenMint`, `NFTokenBurn`, `NFTokenAcceptOffer`, `NFTokenCreateOffer`  |
+| `ref.account`  | String  | Reference account |
+| `ref.nft`  | ?String  | NFTokenID which changed ownership depending on direction for reference account |
+| `ref.direction`  | String  | one of `"IN"`,`"OUT"` or `"UNKNOWN"` |
+| `ref.roles`  | Array  | Array of roles reference account has in this transaction, possible roles: `"UNKNOWN"`, `"OWNER"`, `"MINTER"`, `"BURNER"`, `"BUYER"`, `"SELLER"`, `"BROKER"`  |
 
 ## Running tests
 Run all tests in "tests" directory.

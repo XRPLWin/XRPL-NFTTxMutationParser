@@ -24,11 +24,12 @@ final class Tx10Test extends TestCase
         $NFTTxMutationParser = new NFTTxMutationParser($account, $transaction->result);
         $parsedTransaction = $NFTTxMutationParser->result();
 
-        $this->assertArrayHasKey('nftokenid',$parsedTransaction);
-        $this->assertArrayHasKey('direction',$parsedTransaction);
-        $this->assertEquals('00081702153AA708D64FF2E79DFE9D2D8E27845F9AB4E3C800DA2FC700003A2C',$parsedTransaction['nftokenid']);
-        $this->assertEquals('OUT',$parsedTransaction['direction']);
-        $this->assertEquals(['SELLER'],$parsedTransaction['roles']);
+        $this->assertIsArray($parsedTransaction);
+
+        $this->assertEquals('00081702153AA708D64FF2E79DFE9D2D8E27845F9AB4E3C800DA2FC700003A2C',$parsedTransaction['nft']);
+        $this->assertEquals('00081702153AA708D64FF2E79DFE9D2D8E27845F9AB4E3C800DA2FC700003A2C',$parsedTransaction['ref']['nft']);
+        $this->assertEquals('OUT',$parsedTransaction['ref']['direction']);
+        $this->assertEquals(['SELLER'],$parsedTransaction['ref']['roles']);
         
     }
 
@@ -43,13 +44,14 @@ final class Tx10Test extends TestCase
         $account = "rsa614fckHaBjDpCcZNQqfvVFVPYZzPvE2";
         $NFTTxMutationParser = new NFTTxMutationParser($account, $transaction->result);
         $parsedTransaction = $NFTTxMutationParser->result();
-        
 
-        $this->assertArrayHasKey('nftokenid',$parsedTransaction);
-        $this->assertArrayHasKey('direction',$parsedTransaction);
-        $this->assertEquals('00081702153AA708D64FF2E79DFE9D2D8E27845F9AB4E3C800DA2FC700003A2C',$parsedTransaction['nftokenid']);
-        $this->assertEquals('IN',$parsedTransaction['direction']);
-        $this->assertEquals(['BUYER','OWNER'],$parsedTransaction['roles']); //this account is new owner, state after finalizing transaction
+        $this->assertIsArray($parsedTransaction);
+
+        $this->assertEquals('00081702153AA708D64FF2E79DFE9D2D8E27845F9AB4E3C800DA2FC700003A2C',$parsedTransaction['nft']);
+        $this->assertEquals('00081702153AA708D64FF2E79DFE9D2D8E27845F9AB4E3C800DA2FC700003A2C',$parsedTransaction['ref']['nft']);
+        $this->assertEquals('IN',$parsedTransaction['ref']['direction']);
+        $this->assertEquals(['BUYER','OWNER'],$parsedTransaction['ref']['roles']); //this account is new owner, state after finalizing transaction
+
     }
 
     public function testNFTokenAcceptOfferByIssuer()
@@ -59,13 +61,14 @@ final class Tx10Test extends TestCase
         $account = "rpAETGuhJW5ZYfg3PdsCTELv4ho147AoE9";
         $NFTTxMutationParser = new NFTTxMutationParser($account, $transaction->result);
         $parsedTransaction = $NFTTxMutationParser->result();
-        
 
-        $this->assertArrayHasKey('nftokenid',$parsedTransaction);
-        $this->assertArrayHasKey('direction',$parsedTransaction);
-        $this->assertEquals(null,$parsedTransaction['nftokenid']);
-        $this->assertEquals('UNKNOWN',$parsedTransaction['direction']);
-        $this->assertEquals(['UNKNOWN'],$parsedTransaction['roles']); //ISSUER
+        $this->assertIsArray($parsedTransaction);
+
+        $this->assertEquals('00081702153AA708D64FF2E79DFE9D2D8E27845F9AB4E3C800DA2FC700003A2C',$parsedTransaction['nft']);
+        $this->assertEquals(null,$parsedTransaction['ref']['nft']);
+        $this->assertEquals('UNKNOWN',$parsedTransaction['ref']['direction']);
+        $this->assertEquals(['UNKNOWN'],$parsedTransaction['ref']['roles']);
+
     }
 
     public function testNFTokenAcceptOfferByOther()
@@ -77,10 +80,10 @@ final class Tx10Test extends TestCase
         $parsedTransaction = $NFTTxMutationParser->result();
         
         $this->assertIsArray($parsedTransaction);
-        $this->assertArrayHasKey('nftokenid',$parsedTransaction);
-        $this->assertArrayHasKey('direction',$parsedTransaction);
-        $this->assertEquals(null,$parsedTransaction['nftokenid']);
-        $this->assertEquals('UNKNOWN',$parsedTransaction['direction']);
-        $this->assertEquals(['UNKNOWN'],$parsedTransaction['roles']);
+
+        $this->assertEquals('00081702153AA708D64FF2E79DFE9D2D8E27845F9AB4E3C800DA2FC700003A2C',$parsedTransaction['nft']);
+        $this->assertEquals(null,$parsedTransaction['ref']['nft']);
+        $this->assertEquals('UNKNOWN',$parsedTransaction['ref']['direction']);
+        $this->assertEquals(['UNKNOWN'],$parsedTransaction['ref']['roles']);
     }
 }
