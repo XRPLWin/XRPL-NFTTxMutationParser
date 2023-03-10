@@ -146,13 +146,18 @@ class NFTTxMutationParser
 
   private function handleNFTokenCreateOffer(): void
   {
-    $this->context = self::CONTEXT_OFFER_SELL;
+    $this->context = self::CONTEXT_OFFER_BUY;
 
-    if(isset($this->tx->Owner)) {
-      if($this->tx->Owner != $this->tx->Account) {
-        $this->context = self::CONTEXT_OFFER_BUY;
-      }
+    if(isset($this->tx->Flags) &&  $this->tx->Flags == 1) {
+      $this->context = self::CONTEXT_OFFER_SELL;
     }
+
+    //$this->context = self::CONTEXT_OFFER_SELL;
+    //if(isset($this->tx->Owner)) {
+    //  if($this->tx->Owner != $this->tx->Account) {
+    //    $this->context = self::CONTEXT_OFFER_BUY;
+    //  }
+    //}
   }
 
   private function handleNFTokenAcceptOffer(): void
