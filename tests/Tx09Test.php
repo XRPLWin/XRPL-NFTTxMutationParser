@@ -20,8 +20,9 @@ final class Tx09Test extends TestCase
         $parsedTransaction = $NFTTxMutationParser->result();
 
         $this->assertIsArray($parsedTransaction);
-        $this->assertEquals($account,$parsedTransaction['ref']['account']);
 
+        $this->assertEquals(null,$parsedTransaction['context']);
+        $this->assertEquals($account,$parsedTransaction['ref']['account']);
         $this->assertEquals(null,$parsedTransaction['nft']);
         $this->assertEquals(null,$parsedTransaction['ref']['nft']);
         $this->assertEquals('UNKNOWN',$parsedTransaction['ref']['direction']);
@@ -38,8 +39,9 @@ final class Tx09Test extends TestCase
         $parsedTransaction = $NFTTxMutationParser->result();
         
         $this->assertIsArray($parsedTransaction);
-        $this->assertEquals($account,$parsedTransaction['ref']['account']);
 
+        $this->assertEquals(null,$parsedTransaction['context']);
+        $this->assertEquals($account,$parsedTransaction['ref']['account']);
         $this->assertEquals(null,$parsedTransaction['nft']);
         $this->assertEquals(null,$parsedTransaction['ref']['nft']);
         $this->assertEquals('UNKNOWN',$parsedTransaction['ref']['direction']);

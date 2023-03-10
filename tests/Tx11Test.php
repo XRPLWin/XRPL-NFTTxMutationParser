@@ -21,6 +21,7 @@ final class Tx11Test extends TestCase
 
         $this->assertIsArray($parsedTransaction);
 
+        $this->assertEquals('SELL',$parsedTransaction['context']);
         $this->assertEquals('00082710704B411C4B1627649C1224A381B3AD9C2D8F5B7A53C2AF3000000095',$parsedTransaction['nft']);
         $this->assertEquals('00082710704B411C4B1627649C1224A381B3AD9C2D8F5B7A53C2AF3000000095',$parsedTransaction['ref']['nft']);
         $this->assertEquals('IN',$parsedTransaction['ref']['direction']);
@@ -38,6 +39,7 @@ final class Tx11Test extends TestCase
 
         $this->assertIsArray($parsedTransaction);
 
+        $this->assertEquals('SELL',$parsedTransaction['context']);
         $this->assertEquals('00082710704B411C4B1627649C1224A381B3AD9C2D8F5B7A53C2AF3000000095',$parsedTransaction['nft']);
         $this->assertEquals('00082710704B411C4B1627649C1224A381B3AD9C2D8F5B7A53C2AF3000000095',$parsedTransaction['ref']['nft']);
         $this->assertEquals('OUT',$parsedTransaction['ref']['direction']);
@@ -55,6 +57,7 @@ final class Tx11Test extends TestCase
 
         $this->assertIsArray($parsedTransaction);
 
+        $this->assertEquals('SELL',$parsedTransaction['context']);
         $this->assertEquals('00082710704B411C4B1627649C1224A381B3AD9C2D8F5B7A53C2AF3000000095',$parsedTransaction['nft']);
         $this->assertEquals(null,$parsedTransaction['ref']['nft']);
         $this->assertEquals('UNKNOWN',$parsedTransaction['ref']['direction']);

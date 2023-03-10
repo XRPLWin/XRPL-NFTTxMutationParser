@@ -14,22 +14,26 @@ class NFTTxMutationParser
   # Common
   const ROLE_UNKNOWN    = 'UNKNOWN';
   const ROLE_OWNER      = 'OWNER';
-
   # Mint (minter, owner, unknown)
   const ROLE_MINTER     = 'MINTER';
   # Burn (burner, owner, unknown)
   const ROLE_BURNER     = 'BURNER';
-  
   # Trade (buyer, seller, broker, owner (new owner), unknown)
   const ROLE_BUYER      = 'BUYER';
   const ROLE_SELLER     = 'SELLER';
   const ROLE_BROKER     = 'BROKER';
+
+  # Context
+  const CONTEXT_OFFER_BUY  = 'BUY';
+  const CONTEXT_OFFER_SELL = 'SELL';
+  const CONTEXT_OFFER_BROKERED = 'BROKERED';
 
   private readonly string $account;
   private readonly \stdClass $tx;
 
   # Result variables
   private ?string $nft = null;
+  private ?string $context = null;
 
   # Reference account result variables
   private ?string $ref_nft = null;
@@ -51,6 +55,9 @@ class NFTTxMutationParser
         break;
       case 'NFTokenBurn':
         $this->handleNFTokenBurn();
+        break;
+      case 'NFTokenCreateOffer':
+        $this->handleNFTokenCreateOffer();
         break;
       case 'NFTokenAcceptOffer':
         $this->handleNFTokenAcceptOffer();
@@ -137,6 +144,17 @@ class NFTTxMutationParser
     $this->ref_nft = $this->extractAffectedNFTokenID();
   }
 
+  private function handleNFTokenCreateOffer(): void
+  {
+    $this->context = self::CONTEXT_OFFER_SELL;
+
+    if(isset($this->tx->Owner)) {
+      if($this->tx->Owner != $this->tx->Account) {
+        $this->context = self::CONTEXT_OFFER_BUY;
+      }
+    }
+  }
+
   private function handleNFTokenAcceptOffer(): void
   {
     $affected_account = null;
@@ -145,15 +163,18 @@ class NFTTxMutationParser
     if(isset($this->tx->NFTokenBuyOffer) && !isset($this->tx->NFTokenSellOffer)) { //DIRECT
       //This is buy offer, Account has created NFTokenBuyOffer so Account is seller
       $context = 'SELLER';
+      $this->context = self::CONTEXT_OFFER_BUY;
       $affected_account = $this->tx->Account;
     } elseif(!isset($this->tx->NFTokenBuyOffer) && isset($this->tx->NFTokenSellOffer)) { //DIRECT
       //This is buy offer, Account has created NFTokenSellOffer so Account is buyer
       $context = 'BUYER';
       $affected_account = $this->tx->Account;
+      $this->context = self::CONTEXT_OFFER_SELL;
       if($this->account == $affected_account)
-            $this->ref_roles = [self::ROLE_OWNER];
+        $this->ref_roles = [self::ROLE_OWNER];
     } elseif(isset($this->tx->NFTokenBuyOffer) && isset($this->tx->NFTokenSellOffer)) { //BROKERED
       $context = 'BROKER';
+      $this->context = self::CONTEXT_OFFER_BROKERED;
       $affected_account = null;
     } else {
       throw new \Exception('Not implemented case in handleNFTokenAcceptOffer');
@@ -361,15 +382,13 @@ class NFTTxMutationParser
     \sort($roles,SORT_REGULAR);
     return [
       'nft' => $this->nft,
+      'context' => $this->context,
       'ref' => [
         'account' => $this->account,
         'nft' => $this->ref_nft,
         'direction' => $this->ref_direction,
         'roles'      => $roles
       ]
-      //'nftokenid' => $this->ref_nft,
-      //'direction' => $this->ref_direction,
-      //'roles'      => $roles
     ];
   }
 }

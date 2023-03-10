@@ -21,6 +21,7 @@ final class Tx12Test extends TestCase
 
         $this->assertIsArray($parsedTransaction);
 
+        $this->assertEquals('BROKERED',$parsedTransaction['context']);
         $this->assertEquals('000800FFB7896EF726023B37B8FC50B6D3623A464B2F883B0000099B00000000',$parsedTransaction['nft']);
         $this->assertEquals(null,$parsedTransaction['ref']['nft']);
         $this->assertEquals('UNKNOWN',$parsedTransaction['ref']['direction']);
@@ -38,6 +39,7 @@ final class Tx12Test extends TestCase
 
         $this->assertIsArray($parsedTransaction);
 
+        $this->assertEquals('BROKERED',$parsedTransaction['context']);
         $this->assertEquals('000800FFB7896EF726023B37B8FC50B6D3623A464B2F883B0000099B00000000',$parsedTransaction['nft']);
         $this->assertEquals('000800FFB7896EF726023B37B8FC50B6D3623A464B2F883B0000099B00000000',$parsedTransaction['ref']['nft']);
         $this->assertEquals('OUT',$parsedTransaction['ref']['direction']);
@@ -55,6 +57,7 @@ final class Tx12Test extends TestCase
 
         $this->assertIsArray($parsedTransaction);
 
+        $this->assertEquals('BROKERED',$parsedTransaction['context']);
         $this->assertEquals('000800FFB7896EF726023B37B8FC50B6D3623A464B2F883B0000099B00000000',$parsedTransaction['nft']);
         $this->assertEquals('000800FFB7896EF726023B37B8FC50B6D3623A464B2F883B0000099B00000000',$parsedTransaction['ref']['nft']);
         $this->assertEquals('IN',$parsedTransaction['ref']['direction']);
@@ -69,9 +72,10 @@ final class Tx12Test extends TestCase
         $account = "rvYAfWj5gh67oV6fW32ZzP3Aw4Eubs59B";
         $NFTTxMutationParser = new NFTTxMutationParser($account, $transaction->result);
         $parsedTransaction = $NFTTxMutationParser->result();
-
+        dd($parsedTransaction);
         $this->assertIsArray($parsedTransaction);
 
+        $this->assertEquals('BROKERED',$parsedTransaction['context']);
         $this->assertEquals('000800FFB7896EF726023B37B8FC50B6D3623A464B2F883B0000099B00000000',$parsedTransaction['nft']);
         $this->assertEquals(null,$parsedTransaction['ref']['nft']);
         $this->assertEquals('UNKNOWN',$parsedTransaction['ref']['direction']);

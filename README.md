@@ -57,7 +57,8 @@ print_r($parsedTransaction);
 ┐
 ├ Output for $parsedTransaction:
 ├ Array (
-├     [nft] => 00082710...        
+├     [nft] => 00082710...
+├     [context] => null  
 ├     [ref] => Array
 ├         (
 ├             [account] => rAbc...  
@@ -80,6 +81,7 @@ print_r($parsedTransaction);
 | Key  | Type | TxType |
 | ------------- | ------------- | ------------- |
 | nft  | ?String  | NFTokenID always present in types: `NFTokenMint`, `NFTokenBurn`, `NFTokenAcceptOffer`, `NFTokenCreateOffer`  |
+| context  | ?String  | Context of transaction (specifically offers). One of: `null`,`"BUY"`,`"SELL"`,`"BROKERED"` |
 | ref.account  | String  | Reference account |
 | ref.nft  | ?String  | NFTokenID which changed ownership depending on direction for reference account |
 | ref.direction  | String  | One of: `"IN"`,`"OUT"`,`"UNKNOWN"` |
