@@ -79,11 +79,11 @@ print_r($parsedTransaction);
 
 | Key  | Type | TxType |
 | ------------- | ------------- | ------------- |
-| `nft`  | ?String  | NFTokenID always in types: `NFTokenMint`, `NFTokenBurn`, `NFTokenAcceptOffer`, `NFTokenCreateOffer`  |
-| `ref.account`  | String  | Reference account |
-| `ref.nft`  | ?String  | NFTokenID which changed ownership depending on direction for reference account |
-| `ref.direction`  | String  | one of `"IN"`,`"OUT"` or `"UNKNOWN"` |
-| `ref.roles`  | Array  | Array of roles reference account has in this transaction, possible roles: `"UNKNOWN"`, `"OWNER"`, `"MINTER"`, `"BURNER"`, `"BUYER"`, `"SELLER"`, `"BROKER"`  |
+| nft  | ?String  | NFTokenID always in types: `NFTokenMint`, `NFTokenBurn`, `NFTokenAcceptOffer`, `NFTokenCreateOffer`  |
+| ref.account  | String  | Reference account |
+| ref.nft  | ?String  | NFTokenID which changed ownership depending on direction for reference account |
+| ref.direction  | String  | one of `"IN"`,`"OUT"` or `"UNKNOWN"` |
+| ref.roles  | Array  | Array of roles reference account has in this transaction, possible roles: `"UNKNOWN"`, `"OWNER"`, `"MINTER"`, `"BURNER"`, `"BUYER"`, `"SELLER"`, `"BROKER"`  |
 
 ## Running tests
 Run all tests in "tests" directory.
