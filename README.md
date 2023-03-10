@@ -75,7 +75,7 @@ print_r($parsedTransaction);
 */
 ```
 
-## Response cases
+## Response
 
 | Key  | Type | TxType |
 | ------------- | ------------- | ------------- |
