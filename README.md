@@ -78,7 +78,7 @@ print_r($parsedTransaction);
 
 ## Response
 
-| Key  | Type | TxType |
+| Key  | Type | Description |
 | ------------- | ------------- | ------------- |
 | nft  | ?String  | NFTokenID always present in types: `NFTokenMint`, `NFTokenBurn`, `NFTokenAcceptOffer`, `NFTokenCreateOffer`  |
 | context  | ?String  | Context of transaction (specifically offers). One of: `null`,`"BUY"`,`"SELL"`,`"BROKERED"` |
