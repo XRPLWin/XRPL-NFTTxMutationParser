@@ -112,7 +112,7 @@ class NFTTxMutationParser
 
     $this->ref_direction = self::DIRECTION_IN;
     $this->ref_nft = $this->extractAffectedNFTokenID();
-    
+
   }
 
   private function handleNFTokenBurn(): void
@@ -299,10 +299,12 @@ class NFTTxMutationParser
     $in = \array_unique($in);
     $out = \array_unique($out);
     
-    $diff = \array_values(\array_diff($in,$out));
+    $diff = \array_diff($in,$out);
     if(count($diff) == 0)
-      $diff = \array_values(\array_diff($out,$in)); //reverse direction
+      $diff = \array_diff($out,$in); //reverse direction
     
+    $diff = \array_values($diff);
+
     if(count($diff) == 1)
       return $diff[0];
       
