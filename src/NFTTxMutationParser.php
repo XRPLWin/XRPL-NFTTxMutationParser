@@ -270,13 +270,18 @@ class NFTTxMutationParser
         
         if($affected_node->ModifiedNode->LedgerEntryType === 'NFTokenPage') {
 
-          $inout = $this->extractNFTokenIDsFromNFTTokenPageChange(
-            $affected_node->ModifiedNode->PreviousFields,
-            $affected_node->ModifiedNode->FinalFields
-          );
-          $in = \array_merge($in,$inout['in']);
-          $out = \array_merge($out,$inout['out']);
-          unset($inout);
+          
+          //NFTokens in both PreviousFields and FinalFields are stated if change occured (ModifiedNode only)
+          if(isset($affected_node->ModifiedNode->PreviousFields->NFTokens) && isset($affected_node->ModifiedNode->FinalFields->NFTokens)) {
+            $inout = $this->extractNFTokenIDsFromNFTTokenPageChange(
+              $affected_node->ModifiedNode->PreviousFields,
+              $affected_node->ModifiedNode->FinalFields
+            );
+            $in = \array_merge($in,$inout['in']);
+            $out = \array_merge($out,$inout['out']);
+            unset($inout);
+          }
+          
         }
 
       }
@@ -307,7 +312,7 @@ class NFTTxMutationParser
 
     if(count($diff) == 1)
       return $diff[0];
-      
+
     if(count($diff) > 1)
       throw new \Exception('Unahdled multiple token changes in NFTTokenPage meta detected in tx ['.$this->tx->hash.']');
     
