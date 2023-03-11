@@ -13,7 +13,7 @@ use XRPLWin\XRPLNFTTxMutatationParser\NFTTxMutationParser;
 final class Tx13Test extends TestCase
 {
 
-    public function testNFTokenTradeByMinterPagesShuffle()
+    public function testNFTokenMintByMinterWhenPagesShuffle()
     {
         $transaction = file_get_contents(__DIR__.'/fixtures/tx13.json');
         $transaction = \json_decode($transaction);
@@ -31,7 +31,7 @@ final class Tx13Test extends TestCase
 
     }
 
-    public function testNFTokenTradeByOtherPagesShuffle()
+    public function testNFTokenMintByOtherWhenPagesShuffle()
     {
         $transaction = file_get_contents(__DIR__.'/fixtures/tx13.json');
         $transaction = \json_decode($transaction);
