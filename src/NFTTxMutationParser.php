@@ -64,11 +64,11 @@ class NFTTxMutationParser
         break;
     }
     $this->nft = $this->ref_nft;
-
+    
     if($this->nft === null) {
 
       // Extract subject NFTokenID:
-
+      
       switch($this->tx->TransactionType) {
         case 'NFTokenMint':
           $this->nft = $this->extractAffectedNFTokenID();
@@ -111,8 +111,8 @@ class NFTTxMutationParser
       return;
 
     $this->ref_direction = self::DIRECTION_IN;
-    
     $this->ref_nft = $this->extractAffectedNFTokenID();
+    
   }
 
   private function handleNFTokenBurn(): void
@@ -241,6 +241,11 @@ class NFTTxMutationParser
     }
   }
 
+  /**
+   * Extracts single NFTokenID from changes is NFTokenPages.
+   * @throws \Exception
+   * @return string
+   */
   private function extractAffectedNFTokenID(): string
   {
     $in = $out = [];
@@ -262,7 +267,7 @@ class NFTTxMutationParser
       }
 
       if(isset($affected_node->ModifiedNode)) {
-
+        
         if($affected_node->ModifiedNode->LedgerEntryType === 'NFTokenPage') {
 
           $inout = $this->extractNFTokenIDsFromNFTTokenPageChange(
@@ -277,7 +282,7 @@ class NFTTxMutationParser
       }
       
       if(isset($affected_node->DeletedNode)) {
-
+        
         if($affected_node->DeletedNode->LedgerEntryType === 'NFTokenPage') {
           $inout = $this->extractNFTokenIDsFromNFTTokenPageChange(
             $affected_node->DeletedNode->FinalFields,
@@ -293,17 +298,19 @@ class NFTTxMutationParser
     
     $in = \array_unique($in);
     $out = \array_unique($out);
-
-    $merged = \array_merge($in,$out);
-
-    if(count($merged) == 1)
-      return $merged[0];
-      
-    if(count($merged) > 1)
-      throw new \Exception('Unahdled multiple token changes in NFTTokenPage meta detected');
     
-    if(count($merged) < 1)
-      throw new \Exception('Unahdled no token changes in NFTTokenPage meta detected');
+    $diff = \array_values(\array_diff($in,$out));
+    if(count($diff) == 0)
+      $diff = \array_values(\array_diff($out,$in)); //reverse direction
+    
+    if(count($diff) == 1)
+      return $diff[0];
+      
+    if(count($diff) > 1)
+      throw new \Exception('Unahdled multiple token changes in NFTTokenPage meta detected in tx ['.$this->tx->hash.']');
+    
+    if(count($diff) < 1)
+      throw new \Exception('Unahdled no token changes in NFTTokenPage meta detected in tx ['.$this->tx->hash.']');
 
   }
 
