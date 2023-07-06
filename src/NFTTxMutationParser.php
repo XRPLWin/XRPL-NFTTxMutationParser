@@ -46,6 +46,16 @@ class NFTTxMutationParser
     $this->account = $reference_account;
     $this->tx = $tx;
 
+    /**
+     * Some transaction types like 'ledger' send "metaData" instead of "meta"
+     * Reference metaData to meta if meta does not exist.
+     */
+    if(!isset($this->tx->meta) && isset($this->tx->metaData))
+      $this->tx->meta = $this->tx->metaData;
+
+    if(!isset($this->tx->meta))
+      throw new \Exception('meta or metaData not found in sent transaction');
+
     if(!isset($this->tx->meta->AffectedNodes))
       return;
 
