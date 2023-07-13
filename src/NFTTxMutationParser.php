@@ -84,7 +84,8 @@ class NFTTxMutationParser
           $this->nft = $this->extractAffectedNFTokenID();
           break;
         case 'NFTokenBurn':
-          $this->nft = $this->extractAffectedNFTokenID();
+          $this->nft = $this->tx->NFTokenID;
+          //$this->nft = $this->extractAffectedNFTokenID();
           break;
         case 'NFTokenAcceptOffer':
           $this->nft = $this->extractDataFromDeletedOfferInMeta()['NFTokenID'];
@@ -151,7 +152,8 @@ class NFTTxMutationParser
 
     $this->ref_direction = self::DIRECTION_OUT;
 
-    $this->ref_nft = $this->extractAffectedNFTokenID();
+    $this->ref_nft = $this->tx->NFTokenID;
+    //$this->ref_nft = $this->extractAffectedNFTokenID();
   }
 
   private function handleNFTokenCreateOffer(): void
@@ -324,10 +326,10 @@ class NFTTxMutationParser
       return $diff[0];
 
     if(count($diff) > 1)
-      throw new \Exception('Unahdled multiple token changes in NFTTokenPage meta detected in tx ['.$this->tx->hash.']');
+      throw new \Exception('Unhandled multiple token changes in NFTTokenPage meta detected in tx ['.$this->tx->hash.']');
     
     if(count($diff) < 1)
-      throw new \Exception('Unahdled no token changes in NFTTokenPage meta detected in tx ['.$this->tx->hash.']');
+      throw new \Exception('Unhandled no token changes in NFTTokenPage meta detected in tx ['.$this->tx->hash.']');
 
   }
 
