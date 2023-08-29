@@ -18,7 +18,10 @@ What is checked:
 
 - **Token id** - affected token ID in question
 - **Token direction** - minted - IN, burned, OUT, sold - OUT, bought - IN
-- **Roles** - role of referencing account in this transaction, is it minter, burner, seller, buyer or broker
+- **Roles** - role of referencing account in this transaction, is it minter, burner, seller, buyer, broker, or issuer
+
+Note about issuer:  
+Issuer can only happen in `NFTokenAcceptOffer` transaction type, it is extracted from modified AccountRoot node by checking if balance has been changed. If yes then this account gained percentage of sale, and it is issuer of NFToken.
 
 ### Note
 
@@ -85,7 +88,7 @@ print_r($parsedTransaction);
 | ref.account  | String  | Reference account |
 | ref.nft  | ?String  | NFTokenID which changed ownership depending on direction for reference account |
 | ref.direction  | String  | One of: `"IN"`,`"OUT"`,`"UNKNOWN"` |
-| ref.roles  | Array  | Array of roles reference account has in this transaction, possible roles: `"UNKNOWN"`, `"OWNER"`, `"MINTER"`, `"BURNER"`, `"BUYER"`, `"SELLER"`, `"BROKER"`  |
+| ref.roles  | Array  | Array of roles reference account has in this transaction, possible roles: `"UNKNOWN"`, `"OWNER"`, `"MINTER"`, `"BURNER"`, `"BUYER"`, `"SELLER"`, `"BROKER"`, `"ISSUER"`  |
 
 ## Running tests
 Run all tests in "tests" directory.

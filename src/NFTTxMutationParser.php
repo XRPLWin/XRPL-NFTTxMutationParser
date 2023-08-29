@@ -18,10 +18,11 @@ class NFTTxMutationParser
   const ROLE_MINTER     = 'MINTER';
   # Burn (burner, owner, unknown)
   const ROLE_BURNER     = 'BURNER';
-  # Trade (buyer, seller, broker, owner (new owner), unknown)
+  # Trade (buyer, seller, broker, issuer, owner (new owner), unknown)
   const ROLE_BUYER      = 'BUYER';
   const ROLE_SELLER     = 'SELLER';
   const ROLE_BROKER     = 'BROKER';
+  const ROLE_ISSUER     = 'ISSUER';
 
   # Context
   const CONTEXT_OFFER_BUY  = 'BUY';
@@ -230,6 +231,22 @@ class NFTTxMutationParser
         } else {
           if($this->account == $this->tx->Account)
             $this->ref_roles = [self::ROLE_BROKER];
+        }
+      }
+    }
+
+    //Check if perspective account is issuer of token (checked by balance changes)
+    if($affected_account === null && count($this->ref_roles) == 0) {
+      foreach($this->tx->meta->AffectedNodes as $an) {
+        if(isset($an->ModifiedNode) && $an->ModifiedNode->LedgerEntryType == 'AccountRoot') {
+          if(isset($an->ModifiedNode->PreviousFields->Balance) && isset($an->ModifiedNode->FinalFields->Balance)) {
+           
+            if((string)$an->ModifiedNode->PreviousFields->Balance !== (string)$an->ModifiedNode->FinalFields->Balance) {
+              if($an->ModifiedNode->FinalFields->Account == $this->account) {
+                $this->ref_roles = [self::ROLE_ISSUER];
+              }
+            }
+          }
         }
       }
     }
