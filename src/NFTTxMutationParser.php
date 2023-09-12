@@ -165,6 +165,14 @@ class NFTTxMutationParser
       $this->context = self::CONTEXT_OFFER_SELL;
     }
 
+    if(isset($this->tx->Owner) && $this->account == $this->tx->Owner) {
+      $this->ref_roles[] = self::ROLE_OWNER;
+    }
+
+    if(!isset($this->tx->Owner) && $this->account == $this->tx->Account) {
+      $this->ref_roles[] = self::ROLE_OWNER;
+    }
+
     //$this->context = self::CONTEXT_OFFER_SELL;
     //if(isset($this->tx->Owner)) {
     //  if($this->tx->Owner != $this->tx->Account) {
