@@ -12,13 +12,14 @@ use XRPLWin\XRPLNFTTxMutatationParser\NFTTxMutationParser;
  */
 final class Tx19Test extends TestCase
 {
-  public function testTokenOwnerInCreateOffer()
+  public function testTokenIssuer()
   {
       $transaction = file_get_contents(__DIR__.'/fixtures/tx19.json');
       $transaction = \json_decode($transaction);
       $account = "rHaDANFTy4HQRqyEcL8qNKCdQ5xik8mhq4";
       $NFTTxMutationParser = new NFTTxMutationParser($account, $transaction->result);
       $parsedTransaction = $NFTTxMutationParser->result();
+      dd($parsedTransaction);
 
       $this->assertIsArray($parsedTransaction);
 

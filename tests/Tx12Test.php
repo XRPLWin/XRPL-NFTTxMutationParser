@@ -43,7 +43,7 @@ final class Tx12Test extends TestCase
         $this->assertEquals('000800FFB7896EF726023B37B8FC50B6D3623A464B2F883B0000099B00000000',$parsedTransaction['nft']);
         $this->assertEquals('000800FFB7896EF726023B37B8FC50B6D3623A464B2F883B0000099B00000000',$parsedTransaction['ref']['nft']);
         $this->assertEquals('OUT',$parsedTransaction['ref']['direction']);
-        $this->assertEquals(['SELLER'],$parsedTransaction['ref']['roles']); //also ISSUER
+        $this->assertEquals(['SELLER','ISSUER'],$parsedTransaction['ref']['roles']); //also ISSUER
 
     }
 

@@ -29,6 +29,9 @@ final class Tx11Test extends TestCase
 
     }
 
+    /**
+     * Seller is issuer, this account gets 10% royalty but it is 100% of sale in the same time.
+     */
     public function testNFTokenAcceptOfferBySeller()
     {
         $transaction = file_get_contents(__DIR__.'/fixtures/tx11.json');
@@ -43,7 +46,7 @@ final class Tx11Test extends TestCase
         $this->assertEquals('00082710704B411C4B1627649C1224A381B3AD9C2D8F5B7A53C2AF3000000095',$parsedTransaction['nft']);
         $this->assertEquals('00082710704B411C4B1627649C1224A381B3AD9C2D8F5B7A53C2AF3000000095',$parsedTransaction['ref']['nft']);
         $this->assertEquals('OUT',$parsedTransaction['ref']['direction']);
-        $this->assertEquals(['SELLER'],$parsedTransaction['ref']['roles']);
+        $this->assertEquals(['SELLER','ISSUER'],$parsedTransaction['ref']['roles']);
 
     }
 

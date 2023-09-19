@@ -59,4 +59,24 @@ final class Tx17Test extends TestCase
       $this->assertEquals('UNKNOWN',$parsedTransaction['ref']['direction']);
       $this->assertEquals(['UNKNOWN'],$parsedTransaction['ref']['roles']);
   }
+
+  /**
+   * We are unable to determine issuer here, this is nft transfer, no funds are involved, issuer does not get
+   * any royalty and thus not present in metadata.
+   */
+  public function testBrokeredIssuerPerspective()
+  {
+      $transaction = file_get_contents(__DIR__.'/fixtures/tx17.json');
+      $transaction = \json_decode($transaction);
+      $account = "ra9Uk2bUtM5TUoWLiKsYNANNiDCUa1Wqi7";
+      $NFTTxMutationParser = new NFTTxMutationParser($account, $transaction->result);
+      $parsedTransaction = $NFTTxMutationParser->result();
+
+      $this->assertIsArray($parsedTransaction);
+
+      $this->assertEquals('00081B583865C422F1285CD474817CF1E067373D70CA9E2B734B2A5600000CDC',$parsedTransaction['nft']);
+      $this->assertEquals(null,$parsedTransaction['ref']['nft']);
+      $this->assertEquals('IN',$parsedTransaction['ref']['direction']);
+      $this->assertEquals(['UNKNOWN'],$parsedTransaction['ref']['roles']); //Unable to determine issuer in this transaction! But this is real ISSUER
+  }
 }

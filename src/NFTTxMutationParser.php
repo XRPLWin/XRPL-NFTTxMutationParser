@@ -243,15 +243,20 @@ class NFTTxMutationParser
       }
     }
 
+    # Finding issuer, important here for extracting eventual royalty.
+
     //Check if perspective account is issuer of token (checked by balance changes)
-    if($affected_account === null && count($this->ref_roles) == 0) {
+    if(($affected_account === null || $affected_account != $this->account) && count($this->ref_roles) == 0) {
+      //dd($this->tx->meta);
       foreach($this->tx->meta->AffectedNodes as $an) {
-        if(isset($an->ModifiedNode) && $an->ModifiedNode->LedgerEntryType == 'AccountRoot') {
-          if(isset($an->ModifiedNode->PreviousFields->Balance) && isset($an->ModifiedNode->FinalFields->Balance)) {
+        if(isset($an->ModifiedNode)) {
+          if($an->ModifiedNode->LedgerEntryType == 'AccountRoot') {
+            if(isset($an->ModifiedNode->PreviousFields->Balance) && isset($an->ModifiedNode->FinalFields->Balance)) {
            
-            if((string)$an->ModifiedNode->PreviousFields->Balance !== (string)$an->ModifiedNode->FinalFields->Balance) {
-              if($an->ModifiedNode->FinalFields->Account == $this->account) {
-                $this->ref_roles = [self::ROLE_ISSUER];
+              if((string)$an->ModifiedNode->PreviousFields->Balance !== (string)$an->ModifiedNode->FinalFields->Balance) {
+                if($an->ModifiedNode->FinalFields->Account == $this->account) {
+                  $this->ref_roles = [self::ROLE_ISSUER];
+                }
               }
             }
           }

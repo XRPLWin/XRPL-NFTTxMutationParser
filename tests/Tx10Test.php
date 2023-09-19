@@ -70,7 +70,7 @@ final class Tx10Test extends TestCase
         $this->assertEquals('00081702153AA708D64FF2E79DFE9D2D8E27845F9AB4E3C800DA2FC700003A2C',$parsedTransaction['nft']);
         $this->assertEquals(null,$parsedTransaction['ref']['nft']);
         $this->assertEquals('UNKNOWN',$parsedTransaction['ref']['direction']);
-        $this->assertEquals(['UNKNOWN'],$parsedTransaction['ref']['roles']);
+        $this->assertEquals(['ISSUER'],$parsedTransaction['ref']['roles']);
 
     }
 
