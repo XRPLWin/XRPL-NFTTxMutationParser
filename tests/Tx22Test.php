@@ -14,7 +14,7 @@ final class Tx22Test extends TestCase
   {
       $transaction = file_get_contents(__DIR__.'/fixtures/tx22.json');
       $transaction = \json_decode($transaction);
-      $account = "rEiP3muQXyNVuASSEfGo9tGjnhoPHK8oww"; //this account bought token
+      $account = "rEiP3muQXyNVuASSEfGo9tGjnhoPHK8oww";
       $NFTTxMutationParser = new NFTTxMutationParser($account, $transaction->result);
       $parsedTransaction = $NFTTxMutationParser->result();
 
@@ -23,14 +23,30 @@ final class Tx22Test extends TestCase
       $this->assertEquals('0D8C3949411B396ECE07E9F574482B52377BE8FB4E5D108E94C9B39888EF0CDB',$parsedTransaction['nft']);
       $this->assertEquals('0D8C3949411B396ECE07E9F574482B52377BE8FB4E5D108E94C9B39888EF0CDB',$parsedTransaction['ref']['nft']);
       $this->assertEquals('OUT',$parsedTransaction['ref']['direction']);
-      $this->assertEquals(['BURNER'],$parsedTransaction['ref']['roles']);
+      $this->assertEquals(['BURNER','ISSUER'],$parsedTransaction['ref']['roles']);
+  }
+
+  public function testUriTokenOwner()
+  {
+      $transaction = file_get_contents(__DIR__.'/fixtures/tx22.json');
+      $transaction = \json_decode($transaction);
+      $account = "rJNTKV22U8n9uBkCsdc8W9ABaiVs1AVwR4";
+      $NFTTxMutationParser = new NFTTxMutationParser($account, $transaction->result);
+      $parsedTransaction = $NFTTxMutationParser->result();
+
+      $this->assertIsArray($parsedTransaction);
+
+      $this->assertEquals('0D8C3949411B396ECE07E9F574482B52377BE8FB4E5D108E94C9B39888EF0CDB',$parsedTransaction['nft']);
+      $this->assertEquals('0D8C3949411B396ECE07E9F574482B52377BE8FB4E5D108E94C9B39888EF0CDB',$parsedTransaction['ref']['nft']);
+      $this->assertEquals('UNKNOWN',$parsedTransaction['ref']['direction']);
+      $this->assertEquals(['OWNER'],$parsedTransaction['ref']['roles']);
   }
 
   public function testUriTokenBurnByOtherPerspective()
   {
       $transaction = file_get_contents(__DIR__.'/fixtures/tx22.json');
       $transaction = \json_decode($transaction);
-      $account = "r9gYbjBfANRfA1JHfaCVfPPGfXYiqQvmhS"; //this accont sold token
+      $account = "r9gYbjBfANRfA1JHfaCVfPPGfXYiqQvmhS";
       $NFTTxMutationParser = new NFTTxMutationParser($account, $transaction->result);
       $parsedTransaction = $NFTTxMutationParser->result();
 

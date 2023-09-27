@@ -82,6 +82,9 @@ class NFTTxMutationParser
       case 'URITokenBurn':
         $this->handleURITokenBurn();
         break;
+      case 'URITokenCreateSellOffer':
+        $this->handleURITokenCreateSellOffer();
+        break;
     }
     $this->nft = $this->ref_nft;
     
@@ -106,6 +109,7 @@ class NFTTxMutationParser
         case 'URITokenBuy':
         case 'URITokenMint':
         case 'URITokenBurn':
+        case 'URITokenCreateSellOffer':
           $this->nft = $this->extractAffectedURITokenID();
           break;
       }
@@ -323,9 +327,11 @@ class NFTTxMutationParser
   {
     if($this->account == $this->tx->Account) {
       $this->ref_direction = self::DIRECTION_IN;
-      $this->ref_roles = [self::ROLE_MINTER];
+      $this->ref_roles = [self::ROLE_MINTER, self::ROLE_ISSUER];
       $this->ref_nft = $this->extractAffectedURITokenID();
     }
+
+    //todo extract if is issuer
   }
 
   private function handleURITokenBurn(): void
@@ -335,7 +341,44 @@ class NFTTxMutationParser
       $this->ref_roles = [self::ROLE_BURNER];
       $this->ref_nft = $this->tx->URITokenID;
     }
+
+    //extract issuer and owner of token from metadata
+    foreach($this->tx->meta->AffectedNodes as $an) {
+      if(isset($an->DeletedNode) && $an->DeletedNode->LedgerEntryType == 'URIToken') {
+        
+        if($an->DeletedNode->FinalFields->Issuer == $this->account) {
+          $this->ref_roles[] = self::ROLE_ISSUER;
+          $this->ref_nft = $this->tx->URITokenID;
+        }
+        if($an->DeletedNode->FinalFields->Owner == $this->account) {
+          $this->ref_roles[] = self::ROLE_OWNER;
+          $this->ref_nft = $this->tx->URITokenID;
+        }
+      }
+    }
   }
+
+  private function handleURITokenCreateSellOffer(): void
+  {
+    if($this->account == $this->tx->Account) {
+      $this->ref_direction = self::DIRECTION_UNKNOWN;
+      $this->ref_roles = [self::ROLE_SELLER,self::ROLE_OWNER];
+      $this->ref_nft = $this->tx->URITokenID;
+    }
+
+    //extract issuer of token from metadata
+    foreach($this->tx->meta->AffectedNodes as $an) {
+      if(isset($an->ModifiedNode) && $an->ModifiedNode->LedgerEntryType == 'URIToken') {
+        
+        $issuer = $an->ModifiedNode->FinalFields->Issuer;
+        if($issuer == $this->account) {
+          $this->ref_roles[] = self::ROLE_ISSUER;
+        }
+      }
+    }
+  }
+
+  
   
 
   /**

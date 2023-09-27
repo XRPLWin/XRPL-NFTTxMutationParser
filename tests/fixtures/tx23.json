@@ -1,0 +1,69 @@
+{
+  "result": {
+    "Account": "rHJqCseZFzCveSTdtJuDNpD4ARoMy41E1C",
+    "Amount": {
+      "currency": "EVR",
+      "issuer": "r9gYbjBfANRfA1JHfaCVfPPGfXYiqQvmhS",
+      "value": "2"
+    },
+    "Fee": "20",
+    "LastLedgerSequence": 6925816,
+    "NetworkID": 21338,
+    "Sequence": 1972191,
+    "SigningPubKey": "022E217F024C5338F7B9E38161C5FD5C276FA97E30129790241198E94ECA92DFCF",
+    "TransactionType": "URITokenCreateSellOffer",
+    "TxnSignature": "304402205764E2B364E1245372D9EB9162586EF640CD0AA5F0342F6D69D1B917981ED0020220433C6A9A7AE5A95BB3F3AC3F5DED92292C07C66ABDD8D807E7F9571D3155F6A0",
+    "URITokenID": "30745829F9817AB638094EA3A085DAA03BD4C9E5DF3C6C68C7DE79D8771E2A04",
+    "ctid": "C069ADEF0000535A",
+    "date": 749128902,
+    "hash": "786A8B7F3E6384E76FBDC9F797D8789FE8B295C20BB9B1BF168853A6D855BF08",
+    "inLedger": 6925807,
+    "ledger_index": 6925807,
+    "meta": {
+      "AffectedNodes": [
+        {
+          "ModifiedNode": {
+            "FinalFields": {
+              "Amount": {
+                "currency": "EVR",
+                "issuer": "r9gYbjBfANRfA1JHfaCVfPPGfXYiqQvmhS",
+                "value": "2"
+              },
+              "Flags": 1,
+              "Issuer": "rHJqCseZFzCveSTdtJuDNpD4ARoMy41E1C",
+              "Owner": "rHJqCseZFzCveSTdtJuDNpD4ARoMy41E1C",
+              "OwnerNode": "0",
+              "URI": "5A585A79624756686332564D564659414151414364586F434E37524E69797537424B347272566754685653484776314A6A5141414142345833675141414141414141414141414141414141755A707735"
+            },
+            "LedgerEntryType": "URIToken",
+            "LedgerIndex": "30745829F9817AB638094EA3A085DAA03BD4C9E5DF3C6C68C7DE79D8771E2A04",
+            "PreviousFields": {}
+          }
+        },
+        {
+          "ModifiedNode": {
+            "FinalFields": {
+              "Account": "rHJqCseZFzCveSTdtJuDNpD4ARoMy41E1C",
+              "Balance": "9971803733",
+              "Domain": "66696E657665726E6F64652E78797A",
+              "Flags": 8388608,
+              "MessageKey": "022E217F024C5338F7B9E38161C5FD5C276FA97E30129790241198E94ECA92DFCF",
+              "OwnerCount": 1,
+              "Sequence": 1972192
+            },
+            "LedgerEntryType": "AccountRoot",
+            "LedgerIndex": "D3E27BC5708503E94195A5DE0044EEB3E228F6511AB5E6BB3E0630CC6E40F1B1",
+            "PreviousFields": {
+              "Balance": "9971803753",
+              "Sequence": 1972191
+            }
+          }
+        }
+      ],
+      "TransactionIndex": 0,
+      "TransactionResult": "tesSUCCESS"
+    },
+    "status": "success",
+    "validated": true
+  }
+}
