@@ -296,6 +296,10 @@ class NFTTxMutationParser
     }
   }
 
+  /**
+   * Buys a token by consuming URIToken offer
+   * @return void
+   */
   private function handleURITokenBuy(): void
   {
     if($this->account == $this->tx->Account) {
@@ -309,7 +313,6 @@ class NFTTxMutationParser
     foreach($this->tx->meta->AffectedNodes as $an) {
       if(isset($an->ModifiedNode) && $an->ModifiedNode->LedgerEntryType == 'URIToken') {
         if(isset($an->ModifiedNode->PreviousFields->Owner) && isset($an->ModifiedNode->FinalFields->Owner)) {
-         
           if((string)$an->ModifiedNode->PreviousFields->Owner !== (string)$an->ModifiedNode->FinalFields->Owner) {
             if($an->ModifiedNode->PreviousFields->Owner == $this->account) {
               $this->ref_nft = $this->tx->URITokenID;
@@ -323,6 +326,10 @@ class NFTTxMutationParser
     }
   }
 
+  /**
+   * Mints new token, minted tokens always first go to minter.
+   * @return void
+   */
   private function handleURITokenMint(): void
   {
     if($this->account == $this->tx->Account) {
@@ -330,16 +337,17 @@ class NFTTxMutationParser
       $this->ref_roles = [self::ROLE_MINTER, self::ROLE_ISSUER];
       $this->ref_nft = $this->extractAffectedURITokenID();
     }
-
-    //todo extract if is issuer
   }
 
+  /**
+   * Burns single token, it can burn own tokens or if is issuer and burnable
+   * flag was set when minting, then issuer can burn owned token by someone else.
+   * @return void
+   */
   private function handleURITokenBurn(): void
   {
     if($this->account == $this->tx->Account) {
-      //$this->ref_direction = self::DIRECTION_OUT;
       $this->ref_roles = [self::ROLE_BURNER];
-      $this->ref_nft = $this->tx->URITokenID;
     }
 
     //extract issuer and owner of token from metadata
@@ -348,7 +356,6 @@ class NFTTxMutationParser
         
         if($an->DeletedNode->FinalFields->Issuer == $this->account) {
           $this->ref_roles[] = self::ROLE_ISSUER;
-          $this->ref_nft = $this->tx->URITokenID;
         }
         if($an->DeletedNode->FinalFields->Owner == $this->account) {
           $this->ref_roles[] = self::ROLE_OWNER;
@@ -359,12 +366,15 @@ class NFTTxMutationParser
     }
   }
 
+  /**
+   * Creates new URIToken sell offer, no ownership change can occur.
+   * @return void
+   */
   private function handleURITokenCreateSellOffer(): void
   {
     if($this->account == $this->tx->Account) {
       $this->ref_direction = self::DIRECTION_UNKNOWN;
       $this->ref_roles = [self::ROLE_SELLER,self::ROLE_OWNER];
-      $this->ref_nft = $this->tx->URITokenID;
     }
 
     //extract issuer of token from metadata
@@ -378,9 +388,6 @@ class NFTTxMutationParser
       }
     }
   }
-
-  
-  
 
   /**
    * Extracts single URITokenID from metadata

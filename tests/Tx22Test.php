@@ -21,7 +21,7 @@ final class Tx22Test extends TestCase
       $this->assertIsArray($parsedTransaction);
 
       $this->assertEquals('0D8C3949411B396ECE07E9F574482B52377BE8FB4E5D108E94C9B39888EF0CDB',$parsedTransaction['nft']);
-      $this->assertEquals('0D8C3949411B396ECE07E9F574482B52377BE8FB4E5D108E94C9B39888EF0CDB',$parsedTransaction['ref']['nft']);
+      $this->assertEquals(null,$parsedTransaction['ref']['nft']);
       $this->assertEquals('UNKNOWN',$parsedTransaction['ref']['direction']);
       $this->assertEquals(['BURNER','ISSUER'],$parsedTransaction['ref']['roles']);
   }

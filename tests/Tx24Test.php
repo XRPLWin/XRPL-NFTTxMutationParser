@@ -22,11 +22,11 @@ final class Tx24Test extends TestCase
 
       $this->assertEquals('69DAD8EB9740FC85F95DBCC4C087F489583F3CF206821EC20EB8FE9B85420612',$parsedTransaction['nft']);
       $this->assertEquals('69DAD8EB9740FC85F95DBCC4C087F489583F3CF206821EC20EB8FE9B85420612',$parsedTransaction['ref']['nft']);
-      $this->assertEquals('UNKNOWN',$parsedTransaction['ref']['direction']);
-      $this->assertEquals(['BURNER','ISSUER'],$parsedTransaction['ref']['roles']);
+      $this->assertEquals('OUT',$parsedTransaction['ref']['direction']);
+      $this->assertEquals(['BURNER','ISSUER','OWNER'],$parsedTransaction['ref']['roles']);
   }
 
-  public function testUriTokenBurnByOwnerPerspective()
+  public function testUriTokenBurnByOwnerUnknown()
   {
       $transaction = file_get_contents(__DIR__.'/fixtures/tx24.json');
       $transaction = \json_decode($transaction);
@@ -37,9 +37,9 @@ final class Tx24Test extends TestCase
       $this->assertIsArray($parsedTransaction);
 
       $this->assertEquals('69DAD8EB9740FC85F95DBCC4C087F489583F3CF206821EC20EB8FE9B85420612',$parsedTransaction['nft']);
-      $this->assertEquals('69DAD8EB9740FC85F95DBCC4C087F489583F3CF206821EC20EB8FE9B85420612',$parsedTransaction['ref']['nft']);
-      $this->assertEquals('OUT',$parsedTransaction['ref']['direction']);
-      $this->assertEquals(['OWNER'],$parsedTransaction['ref']['roles']);
+      $this->assertEquals(null,$parsedTransaction['ref']['nft']);
+      $this->assertEquals('UNKNOWN',$parsedTransaction['ref']['direction']);
+      $this->assertEquals(['UNKNOWN'],$parsedTransaction['ref']['roles']);
   }
 
   public function testUriTokenBurnByOther()
