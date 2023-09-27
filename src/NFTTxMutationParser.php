@@ -79,6 +79,9 @@ class NFTTxMutationParser
       case 'URITokenMint':
         $this->handleURITokenMint();
         break;
+      case 'URITokenBurn':
+        $this->handleURITokenBurn();
+        break;
     }
     $this->nft = $this->ref_nft;
     
@@ -101,9 +104,8 @@ class NFTTxMutationParser
           $this->nft = $this->tx->NFTokenID;
           break;
         case 'URITokenBuy':
-          $this->nft = $this->tx->URITokenID;
-          break;
         case 'URITokenMint':
+        case 'URITokenBurn':
           $this->nft = $this->extractAffectedURITokenID();
           break;
       }
@@ -326,6 +328,16 @@ class NFTTxMutationParser
     }
   }
 
+  private function handleURITokenBurn(): void
+  {
+    if($this->account == $this->tx->Account) {
+      $this->ref_direction = self::DIRECTION_OUT;
+      $this->ref_roles = [self::ROLE_BURNER];
+      $this->ref_nft = $this->tx->URITokenID;
+    }
+  }
+  
+
   /**
    * Extracts single URITokenID from metadata
    * Handled CreatedNode of type URIToken
@@ -334,6 +346,9 @@ class NFTTxMutationParser
    */
   private function extractAffectedURITokenID(): string
   {
+    if(isset($this->tx->URITokenID))
+      return $this->tx->URITokenID;
+
     foreach($this->tx->meta->AffectedNodes as $an) {
       if(isset($an->CreatedNode) && $an->CreatedNode->LedgerEntryType == 'URIToken') {
         return $an->CreatedNode->LedgerIndex;
