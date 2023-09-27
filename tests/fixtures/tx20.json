@@ -1,0 +1,197 @@
+{
+  "result": {
+    "Account": "rHqSYyo218SHXydoNatcLnj3ec4CWJVCFZ",
+    "Amount": {
+      "currency": "EVR",
+      "issuer": "r9gYbjBfANRfA1JHfaCVfPPGfXYiqQvmhS",
+      "value": "2"
+    },
+    "Fee": "20",
+    "HookParameters": [
+      {
+        "HookParameter": {
+          "HookParameterName": "4556520100000000000000000000000000000000000000000000000000000002",
+          "HookParameterValue": "65766E416371756972654C65617365"
+        }
+      }
+    ],
+    "LastLedgerSequence": 6858112,
+    "Memos": [
+      {
+        "Memo": {
+          "MemoData": "4151546179654A7833767867465674647A6A47473763695253457253563237566D5569475A6B47556376656A346379583873524537695450334D63586261416D306D7A5647766774566E656964723372714D43412F66675050594C574D49573159794D71516B55355973354D4B52324475626276524F6A36344E4B517853677A454B7447483751357356417150674C366837542F51312F5572426D502B4A756C734B6577754757346178715642627A6B3670366A6668756145704D506D4173393161743174667A48335266704F73454A5A6C462F6F5A4B6A3147376A785838526244756F4374356D2F535958746346763739514563726A4B3141417456636A4B4365544B72494458554F6D517952517A6E62336C5639617470344F31366551707071676430574D3463456759654C4164497963646E7A6346595A526C713130515A774E696A69547A57453056724F42723834733265386269773047615179593065454142785A6D516D72687869702B5568347979446C542F56343739687046616A5631424451776A384E41504A6F4C682F32336C52546931676D6677426266595442492F456148454E33325744684E654F334973614743634B645057684F7044457946754F68593372495078556E4C66686F37627A776650614831453351394A4755365A712B7364736B754D6E35537A34574F38655A544B5A5A4565744E6F6D64416B3D",
+          "MemoFormat": "626173653634",
+          "MemoType": "65766E416371756972654C65617365"
+        }
+      }
+    ],
+    "NetworkID": 21338,
+    "Sequence": 6858073,
+    "SigningPubKey": "030E8F631DB4A2AD95FEEB29070D37FB241D5DD2802B9D0911C3ED4505C47A965A",
+    "TransactionType": "URITokenBuy",
+    "TxnSignature": "3045022100C8692350699C499050EB8931DA14B4EF6341904E67990A56113FBE3058D9A293022075279EC95F53D957E295C4E86F80F9188E1B5073B997362122A42BADE162C006",
+    "URITokenID": "A975A3B6C1358FEBDCB678E0C3353AD49D6F6527E0B785E87392B15C713B3221",
+    "ctid": "C068A5780000535A",
+    "date": 748924460,
+    "hash": "6BBDF95E72B5C49EA21D71E48EF083F8A424598ABE1B8091B5246EDDAAD15107",
+    "inLedger": 6858104,
+    "ledger_index": 6858104,
+    "meta": {
+      "AffectedNodes": [
+        {
+          "ModifiedNode": {
+            "FinalFields": {
+              "Flags": 0,
+              "IndexNext": "4a",
+              "IndexPrevious": "37",
+              "Owner": "rEiP3muQXyNVuASSEfGo9tGjnhoPHK8oww",
+              "RootIndex": "11A0E83797E299ACE9455B6B6A52F3D4738DEDFC316AEC7EC6F2733A9709DFBB"
+            },
+            "LedgerEntryType": "DirectoryNode",
+            "LedgerIndex": "096DF60C4BC8DE572164C118672AEB123A5F1A895500E56BC59009471D333CFB"
+          }
+        },
+        {
+          "ModifiedNode": {
+            "FinalFields": {
+              "Flags": 0,
+              "Owner": "rHqSYyo218SHXydoNatcLnj3ec4CWJVCFZ",
+              "RootIndex": "1221CCE049D79490C2D3D413C7AA112ECA37E20B21A113F2BB051E9E9D0C38F4"
+            },
+            "LedgerEntryType": "DirectoryNode",
+            "LedgerIndex": "1221CCE049D79490C2D3D413C7AA112ECA37E20B21A113F2BB051E9E9D0C38F4"
+          }
+        },
+        {
+          "ModifiedNode": {
+            "FinalFields": {
+              "Balance": {
+                "currency": "EVR",
+                "issuer": "rrrrrrrrrrrrrrrrrrrrBZbvji",
+                "value": "-172996.8332794865"
+              },
+              "Flags": 2228224,
+              "HighLimit": {
+                "currency": "EVR",
+                "issuer": "rEiP3muQXyNVuASSEfGo9tGjnhoPHK8oww",
+                "value": "9999999999999900e-2"
+              },
+              "HighNode": "0",
+              "LowLimit": {
+                "currency": "EVR",
+                "issuer": "r9gYbjBfANRfA1JHfaCVfPPGfXYiqQvmhS",
+                "value": "0"
+              },
+              "LowNode": "3"
+            },
+            "LedgerEntryType": "RippleState",
+            "LedgerIndex": "4D41A06F365137237AF9DF44BCB7F9F8B97E673BA88DAA1E2C8A179365BA0448",
+            "PreviousFields": {
+              "Balance": {
+                "currency": "EVR",
+                "issuer": "rrrrrrrrrrrrrrrrrrrrBZbvji",
+                "value": "-172994.8332794865"
+              }
+            }
+          }
+        },
+        {
+          "ModifiedNode": {
+            "FinalFields": {
+              "Account": "rEiP3muQXyNVuASSEfGo9tGjnhoPHK8oww",
+              "Balance": "9916896129",
+              "Domain": "64617070732D6465762E676576656F2E636F6D",
+              "Flags": 8388608,
+              "MessageKey": "0200D09AC2C08CFECB6D4D97B9B2341F1DCCE2CEBA5638CC22EDBA726930E2F417",
+              "OwnerCount": 0,
+              "Sequence": 2113449
+            },
+            "LedgerEntryType": "AccountRoot",
+            "LedgerIndex": "A088943F4C61B3FFA361E4E41E929E67ED98794F92837EA8243473A9A5F4F613",
+            "PreviousFields": {
+              "OwnerCount": 1
+            }
+          }
+        },
+        {
+          "ModifiedNode": {
+            "FinalFields": {
+              "Account": "rHqSYyo218SHXydoNatcLnj3ec4CWJVCFZ",
+              "Balance": "9999999919",
+              "Flags": 0,
+              "MessageKey": "030E8F631DB4A2AD95FEEB29070D37FB241D5DD2802B9D0911C3ED4505C47A965A",
+              "OwnerCount": 2,
+              "Sequence": 6858074
+            },
+            "LedgerEntryType": "AccountRoot",
+            "LedgerIndex": "A45A2DC863002234E4E3A3DCBD391D38F3B6D028F6FEAC61FA473E77F42F2DD1",
+            "PreviousFields": {
+              "Balance": "9999999939",
+              "OwnerCount": 1,
+              "Sequence": 6858073
+            }
+          }
+        },
+        {
+          "ModifiedNode": {
+            "FinalFields": {
+              "Flags": 1,
+              "Issuer": "rEiP3muQXyNVuASSEfGo9tGjnhoPHK8oww",
+              "Owner": "rHqSYyo218SHXydoNatcLnj3ec4CWJVCFZ",
+              "OwnerNode": "0",
+              "URI": "5A585A79624756686332554151485636416A653054597372757753754B36315945345655687872395359304141414167504D453D"
+            },
+            "LedgerEntryType": "URIToken",
+            "LedgerIndex": "A975A3B6C1358FEBDCB678E0C3353AD49D6F6527E0B785E87392B15C713B3221",
+            "PreviousFields": {
+              "Amount": {
+                "currency": "EVR",
+                "issuer": "r9gYbjBfANRfA1JHfaCVfPPGfXYiqQvmhS",
+                "value": "2"
+              },
+              "Owner": "rEiP3muQXyNVuASSEfGo9tGjnhoPHK8oww",
+              "OwnerNode": "49"
+            }
+          }
+        },
+        {
+          "ModifiedNode": {
+            "FinalFields": {
+              "Balance": {
+                "currency": "EVR",
+                "issuer": "rrrrrrrrrrrrrrrrrrrrBZbvji",
+                "value": "-5998"
+              },
+              "Flags": 2228224,
+              "HighLimit": {
+                "currency": "EVR",
+                "issuer": "rHqSYyo218SHXydoNatcLnj3ec4CWJVCFZ",
+                "value": "9999999999999900e-2"
+              },
+              "HighNode": "0",
+              "LowLimit": {
+                "currency": "EVR",
+                "issuer": "r9gYbjBfANRfA1JHfaCVfPPGfXYiqQvmhS",
+                "value": "0"
+              },
+              "LowNode": "1f"
+            },
+            "LedgerEntryType": "RippleState",
+            "LedgerIndex": "C7CD89D4EB0ADE3F0D5FAFC99DFEDDF9FD839259761ED216BA70B61C7900C7C5",
+            "PreviousFields": {
+              "Balance": {
+                "currency": "EVR",
+                "issuer": "rrrrrrrrrrrrrrrrrrrrBZbvji",
+                "value": "-6000"
+              }
+            }
+          }
+        }
+      ],
+      "TransactionIndex": 0,
+      "TransactionResult": "tesSUCCESS"
+    },
+    "status": "success",
+    "validated": true
+  }
+}

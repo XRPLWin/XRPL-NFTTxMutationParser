@@ -7,10 +7,10 @@ use XRPLWin\XRPLNFTTxMutatationParser\NFTTxMutationParser;
 
 /***
  * NFTokenCreateOffer issuer
- * 
+ * @deprecated
  * @see B243CB8370ADD8770B7F055AA2B3792F87299A5F2C2A0D0B4865615B3A8CA727
  */
-final class Tx19Test extends TestCase
+final class Tx19TestDev extends TestCase
 {
   public function testTokenOwnerInCreateOffer()
   {

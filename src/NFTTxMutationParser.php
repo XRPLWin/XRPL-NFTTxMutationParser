@@ -73,6 +73,9 @@ class NFTTxMutationParser
       case 'NFTokenAcceptOffer':
         $this->handleNFTokenAcceptOffer();
         break;
+      case 'URITokenBuy':
+        $this->handleURITokenBuy();
+        break;
     }
     $this->nft = $this->ref_nft;
     
@@ -93,6 +96,9 @@ class NFTTxMutationParser
           break;
         case 'NFTokenCreateOffer':
           $this->nft = $this->tx->NFTokenID;
+          break;
+        case 'URITokenBuy':
+          $this->nft = $this->tx->URITokenID;
           break;
       }
     }
@@ -278,6 +284,32 @@ class NFTTxMutationParser
     }
   }
 
+  private function handleURITokenBuy(): void
+  {
+    if($this->account == $this->tx->Account) {
+      $this->ref_nft = $this->tx->URITokenID;
+      $this->ref_direction = self::DIRECTION_IN;
+      $this->ref_roles = [self::ROLE_OWNER,self::ROLE_BUYER];
+      return;
+    }
+
+    //check if $this->account is seller from metadata
+    foreach($this->tx->meta->AffectedNodes as $an) {
+      if(isset($an->ModifiedNode) && $an->ModifiedNode->LedgerEntryType == 'URIToken') {
+        if(isset($an->ModifiedNode->PreviousFields->Owner) && isset($an->ModifiedNode->FinalFields->Owner)) {
+         
+          if((string)$an->ModifiedNode->PreviousFields->Owner !== (string)$an->ModifiedNode->FinalFields->Owner) {
+            if($an->ModifiedNode->PreviousFields->Owner == $this->account) {
+              $this->ref_nft = $this->tx->URITokenID;
+              $this->ref_direction = self::DIRECTION_OUT;
+              $this->ref_roles = [self::ROLE_SELLER];
+              return;
+            }
+          }
+        }
+      }
+    }
+  }
   /**
    * Extracts single NFTokenID from changes is NFTokenPages.
    * @throws \Exception
