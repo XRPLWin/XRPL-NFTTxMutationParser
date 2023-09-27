@@ -10,7 +10,7 @@ use XRPLWin\XRPLNFTTxMutatationParser\NFTTxMutationParser;
  */
 final class Tx20Test extends TestCase
 {
-  public function testBuy()
+  public function testUriTokenBuyer()
   {
       $transaction = file_get_contents(__DIR__.'/fixtures/tx20.json');
       $transaction = \json_decode($transaction);
@@ -26,7 +26,7 @@ final class Tx20Test extends TestCase
       $this->assertEquals(['BUYER','OWNER'],$parsedTransaction['ref']['roles']);
   }
 
-  public function testSell()
+  public function testUriTokenSeller()
   {
       $transaction = file_get_contents(__DIR__.'/fixtures/tx20.json');
       $transaction = \json_decode($transaction);
@@ -42,7 +42,7 @@ final class Tx20Test extends TestCase
       $this->assertEquals(['SELLER'],$parsedTransaction['ref']['roles']);
   }
 
-  public function testOther()
+  public function testUriTokenOther()
   {
       $transaction = file_get_contents(__DIR__.'/fixtures/tx20.json');
       $transaction = \json_decode($transaction);

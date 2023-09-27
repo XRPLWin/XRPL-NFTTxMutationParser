@@ -76,6 +76,9 @@ class NFTTxMutationParser
       case 'URITokenBuy':
         $this->handleURITokenBuy();
         break;
+      case 'URITokenMint':
+        $this->handleURITokenMint();
+        break;
     }
     $this->nft = $this->ref_nft;
     
@@ -99,6 +102,9 @@ class NFTTxMutationParser
           break;
         case 'URITokenBuy':
           $this->nft = $this->tx->URITokenID;
+          break;
+        case 'URITokenMint':
+          $this->nft = $this->extractAffectedURITokenID();
           break;
       }
     }
@@ -310,6 +316,32 @@ class NFTTxMutationParser
       }
     }
   }
+
+  private function handleURITokenMint(): void
+  {
+    if($this->account == $this->tx->Account) {
+      $this->ref_direction = self::DIRECTION_IN;
+      $this->ref_roles = [self::ROLE_MINTER];
+      $this->ref_nft = $this->extractAffectedURITokenID();
+    }
+  }
+
+  /**
+   * Extracts single URITokenID from metadata
+   * Handled CreatedNode of type URIToken
+   * @throws \Exception
+   * @return string
+   */
+  private function extractAffectedURITokenID(): string
+  {
+    foreach($this->tx->meta->AffectedNodes as $an) {
+      if(isset($an->CreatedNode) && $an->CreatedNode->LedgerEntryType == 'URIToken') {
+        return $an->CreatedNode->LedgerIndex;
+      }
+    }
+    throw new \Exception('Unhandled: no URITokenID found in meta in tx ['.$this->tx->hash.']');
+  }
+
   /**
    * Extracts single NFTokenID from changes is NFTokenPages.
    * @throws \Exception
