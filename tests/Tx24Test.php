@@ -6,45 +6,45 @@ use PHPUnit\Framework\TestCase;
 use XRPLWin\XRPLNFTTxMutatationParser\NFTTxMutationParser;
 
 /***
- * URITokenBurn
+ * URITokenBurn - burn by issuer
  */
-final class Tx22Test extends TestCase
+final class Tx24Test extends TestCase
 {
-  public function testUriTokenBurner()
+  public function testUriTokenBurnByIssuer()
   {
-      $transaction = file_get_contents(__DIR__.'/fixtures/tx22.json');
+      $transaction = file_get_contents(__DIR__.'/fixtures/tx24.json');
       $transaction = \json_decode($transaction);
-      $account = "rEiP3muQXyNVuASSEfGo9tGjnhoPHK8oww";
+      $account = "raL76YeFLJxccNjkNkud5zkitaY8Kofqi6"; //this account is trying to sell token
       $NFTTxMutationParser = new NFTTxMutationParser($account, $transaction->result);
       $parsedTransaction = $NFTTxMutationParser->result();
 
       $this->assertIsArray($parsedTransaction);
 
-      $this->assertEquals('0D8C3949411B396ECE07E9F574482B52377BE8FB4E5D108E94C9B39888EF0CDB',$parsedTransaction['nft']);
-      $this->assertEquals('0D8C3949411B396ECE07E9F574482B52377BE8FB4E5D108E94C9B39888EF0CDB',$parsedTransaction['ref']['nft']);
+      $this->assertEquals('69DAD8EB9740FC85F95DBCC4C087F489583F3CF206821EC20EB8FE9B85420612',$parsedTransaction['nft']);
+      $this->assertEquals('69DAD8EB9740FC85F95DBCC4C087F489583F3CF206821EC20EB8FE9B85420612',$parsedTransaction['ref']['nft']);
       $this->assertEquals('UNKNOWN',$parsedTransaction['ref']['direction']);
       $this->assertEquals(['BURNER','ISSUER'],$parsedTransaction['ref']['roles']);
   }
 
-  public function testUriTokenOwner()
+  public function testUriTokenBurnByOwnerPerspective()
   {
-      $transaction = file_get_contents(__DIR__.'/fixtures/tx22.json');
+      $transaction = file_get_contents(__DIR__.'/fixtures/tx24.json');
       $transaction = \json_decode($transaction);
-      $account = "rJNTKV22U8n9uBkCsdc8W9ABaiVs1AVwR4";
+      $account = "r3HfHxf6LeY8y1SGWHoKRRrUGdxruJyXEL"; //this account is trying to sell token
       $NFTTxMutationParser = new NFTTxMutationParser($account, $transaction->result);
       $parsedTransaction = $NFTTxMutationParser->result();
 
       $this->assertIsArray($parsedTransaction);
 
-      $this->assertEquals('0D8C3949411B396ECE07E9F574482B52377BE8FB4E5D108E94C9B39888EF0CDB',$parsedTransaction['nft']);
-      $this->assertEquals('0D8C3949411B396ECE07E9F574482B52377BE8FB4E5D108E94C9B39888EF0CDB',$parsedTransaction['ref']['nft']);
+      $this->assertEquals('69DAD8EB9740FC85F95DBCC4C087F489583F3CF206821EC20EB8FE9B85420612',$parsedTransaction['nft']);
+      $this->assertEquals('69DAD8EB9740FC85F95DBCC4C087F489583F3CF206821EC20EB8FE9B85420612',$parsedTransaction['ref']['nft']);
       $this->assertEquals('OUT',$parsedTransaction['ref']['direction']);
       $this->assertEquals(['OWNER'],$parsedTransaction['ref']['roles']);
   }
 
-  public function testUriTokenBurnByOtherPerspective()
+  public function testUriTokenBurnByOther()
   {
-      $transaction = file_get_contents(__DIR__.'/fixtures/tx22.json');
+      $transaction = file_get_contents(__DIR__.'/fixtures/tx24.json');
       $transaction = \json_decode($transaction);
       $account = "r9gYbjBfANRfA1JHfaCVfPPGfXYiqQvmhS";
       $NFTTxMutationParser = new NFTTxMutationParser($account, $transaction->result);
@@ -52,7 +52,7 @@ final class Tx22Test extends TestCase
 
       $this->assertIsArray($parsedTransaction);
 
-      $this->assertEquals('0D8C3949411B396ECE07E9F574482B52377BE8FB4E5D108E94C9B39888EF0CDB',$parsedTransaction['nft']);
+      $this->assertEquals('69DAD8EB9740FC85F95DBCC4C087F489583F3CF206821EC20EB8FE9B85420612',$parsedTransaction['nft']);
       $this->assertEquals(null,$parsedTransaction['ref']['nft']);
       $this->assertEquals('UNKNOWN',$parsedTransaction['ref']['direction']);
       $this->assertEquals(['UNKNOWN'],$parsedTransaction['ref']['roles']);

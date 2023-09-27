@@ -1,0 +1,72 @@
+{
+  "result": {
+    "Account": "raL76YeFLJxccNjkNkud5zkitaY8Kofqi6",
+    "Fee": "20",
+    "Flags": 0,
+    "LastLedgerSequence": 5185434,
+    "NetworkID": 21338,
+    "Sequence": 3532944,
+    "SigningPubKey": "03AFCC8118C73A185462117748E606483AD208CE994FA095F27AC1CFC688727503",
+    "TransactionType": "URITokenBurn",
+    "TxnSignature": "304402205276A2FF9338CBDC2956091A34C326D2A06FD7711CA804DF106DA1ED9CD0C6A002200ED0C76F33256CB1DDFDFF7B6D6D485F2B4000E42C212610D96915ED111EF1FE",
+    "URITokenID": "69DAD8EB9740FC85F95DBCC4C087F489583F3CF206821EC20EB8FE9B85420612",
+    "ctid": "C04F1F920000535A",
+    "date": 743872980,
+    "hash": "D3EF49B985D912D435C4663CDB09A062D4C798B26D76FCA22C4C526D6B6BCF02",
+    "inLedger": 5185426,
+    "ledger_index": 5185426,
+    "meta": {
+      "AffectedNodes": [
+        {
+          "ModifiedNode": {
+            "FinalFields": {
+              "Flags": 0,
+              "Owner": "r3HfHxf6LeY8y1SGWHoKRRrUGdxruJyXEL",
+              "RootIndex": "58FA533A411461C10D0E723BD9B53056FF0BE9B737A1F46F3E9E5F89AE363BDB"
+            },
+            "LedgerEntryType": "DirectoryNode",
+            "LedgerIndex": "58FA533A411461C10D0E723BD9B53056FF0BE9B737A1F46F3E9E5F89AE363BDB"
+          }
+        },
+        {
+          "DeletedNode": {
+            "FinalFields": {
+              "Flags": 1,
+              "Issuer": "raL76YeFLJxccNjkNkud5zkitaY8Kofqi6",
+              "Owner": "r3HfHxf6LeY8y1SGWHoKRRrUGdxruJyXEL",
+              "OwnerNode": "0",
+              "PreviousTxnID": "51D5B66DEB69F186583B8E97FC3DED5BAFB618A51B5F45A30D234D4AECDB57EB",
+              "PreviousTxnLgrSeq": 5184238,
+              "URI": "5A585A79624756686332554141585636416A653054597372757753754B363159453456556878723953593041414141313538593D"
+            },
+            "LedgerEntryType": "URIToken",
+            "LedgerIndex": "69DAD8EB9740FC85F95DBCC4C087F489583F3CF206821EC20EB8FE9B85420612"
+          }
+        },
+        {
+          "ModifiedNode": {
+            "FinalFields": {
+              "Account": "raL76YeFLJxccNjkNkud5zkitaY8Kofqi6",
+              "Balance": "9990690268",
+              "Domain": "707673312E6D79776972652E6F7267",
+              "Flags": 8388608,
+              "MessageKey": "03AFCC8118C73A185462117748E606483AD208CE994FA095F27AC1CFC688727503",
+              "OwnerCount": 0,
+              "Sequence": 3532945
+            },
+            "LedgerEntryType": "AccountRoot",
+            "LedgerIndex": "A067E3DAC61349C2F4B07619012A9835651834224D285B8D8D29F8DE1921F8AD",
+            "PreviousFields": {
+              "Balance": "9990690288",
+              "Sequence": 3532944
+            }
+          }
+        }
+      ],
+      "TransactionIndex": 0,
+      "TransactionResult": "tesSUCCESS"
+    },
+    "status": "success",
+    "validated": true
+  }
+}

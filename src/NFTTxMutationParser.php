@@ -337,7 +337,7 @@ class NFTTxMutationParser
   private function handleURITokenBurn(): void
   {
     if($this->account == $this->tx->Account) {
-      $this->ref_direction = self::DIRECTION_OUT;
+      //$this->ref_direction = self::DIRECTION_OUT;
       $this->ref_roles = [self::ROLE_BURNER];
       $this->ref_nft = $this->tx->URITokenID;
     }
@@ -352,6 +352,7 @@ class NFTTxMutationParser
         }
         if($an->DeletedNode->FinalFields->Owner == $this->account) {
           $this->ref_roles[] = self::ROLE_OWNER;
+          $this->ref_direction = self::DIRECTION_OUT;
           $this->ref_nft = $this->tx->URITokenID;
         }
       }
