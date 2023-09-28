@@ -1,0 +1,61 @@
+{
+    "result": {
+      "Account": "rnahZg31eWFdS4Vx4m9MGXX5JofdiyYb3Y",
+      "Fee": "12",
+      "Flags": 0,
+      "LastLedgerSequence": 6959449,
+      "NetworkID": 21338,
+      "Sequence": 6959377,
+      "SigningPubKey": "02E2466FBC89EB3CBBF3E1E351EB9A2FE7BD8FFE5E2E4399AF547BAFE39D207B3B",
+      "TransactionType": "URITokenCancelSellOffer",
+      "TxnSignature": "304502210082398F4F7DC8AC265C757617AE9C9C948D143608E281431F10779FF518C40E42022050D9574C5BD98190A371959C8ACC44A00E5702F5A1883028F45BAB4ECDF302F5",
+      "URITokenID": "F2AD40BE498122FBEB9E4D07F460FB842895075DD2C5ED8ACFFE2E69C33D10E0",
+      "ctid": "C06A31470000535A",
+      "date": 749230321,
+      "hash": "E0A944084537C133454B56D8B1B75E59C7C096239417F5808D794BBC41DB34B2",
+      "inLedger": 6959431,
+      "ledger_index": 6959431,
+      "meta": {
+        "AffectedNodes": [
+          {
+            "ModifiedNode": {
+              "FinalFields": {
+                "Account": "rnahZg31eWFdS4Vx4m9MGXX5JofdiyYb3Y",
+                "AccountIndex": "316",
+                "Balance": "9999999952",
+                "Flags": 0,
+                "OwnerCount": 1,
+                "Sequence": 6959378
+              },
+              "LedgerEntryType": "AccountRoot",
+              "LedgerIndex": "B38447010910829FC9136B29391290F34CDB0FA48C1AC0356274BB9016B9BF6D",
+              "PreviousFields": {
+                "Balance": "9999999964",
+                "Sequence": 6959377
+              }
+            }
+          },
+          {
+            "ModifiedNode": {
+              "FinalFields": {
+                "Flags": 0,
+                "Issuer": "rN498u9yfGYmd5X9zXts1zr6kyQFc2mhjS",
+                "Owner": "rnahZg31eWFdS4Vx4m9MGXX5JofdiyYb3Y",
+                "OwnerNode": "0",
+                "URI": "68747470733A2F2F656E2E6D656D696E672E776F726C642F696D616765732F656E2F362F36652F5375727072697365645F50696B616368752E6A7067"
+              },
+              "LedgerEntryType": "URIToken",
+              "LedgerIndex": "F2AD40BE498122FBEB9E4D07F460FB842895075DD2C5ED8ACFFE2E69C33D10E0",
+              "PreviousFields": {
+                "Amount": "589"
+              }
+            }
+          }
+        ],
+        "TransactionIndex": 0,
+        "TransactionResult": "tesSUCCESS"
+      },
+      "status": "success",
+      "validated": true
+    }
+  }

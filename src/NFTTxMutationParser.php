@@ -85,6 +85,9 @@ class NFTTxMutationParser
       case 'URITokenCreateSellOffer':
         $this->handleURITokenCreateSellOffer();
         break;
+      case 'URITokenCancelSellOffer':
+        $this->handleURITokenCancelSellOffer();
+        break;
     }
     $this->nft = $this->ref_nft;
     
@@ -110,6 +113,7 @@ class NFTTxMutationParser
         case 'URITokenMint':
         case 'URITokenBurn':
         case 'URITokenCreateSellOffer':
+        case 'URITokenCancelSellOffer':
           $this->nft = $this->extractAffectedURITokenID();
           break;
       }
@@ -375,6 +379,25 @@ class NFTTxMutationParser
     if($this->account == $this->tx->Account) {
       $this->ref_direction = self::DIRECTION_UNKNOWN;
       $this->ref_roles = [self::ROLE_SELLER,self::ROLE_OWNER];
+    }
+
+    //extract issuer of token from metadata
+    foreach($this->tx->meta->AffectedNodes as $an) {
+      if(isset($an->ModifiedNode) && $an->ModifiedNode->LedgerEntryType == 'URIToken') {
+        
+        $issuer = $an->ModifiedNode->FinalFields->Issuer;
+        if($issuer == $this->account) {
+          $this->ref_roles[] = self::ROLE_ISSUER;
+        }
+      }
+    }
+  }
+
+  private function handleURITokenCancelSellOffer(): void
+  {
+    if($this->account == $this->tx->Account) {
+      $this->ref_direction = self::DIRECTION_UNKNOWN;
+      $this->ref_roles = [self::ROLE_OWNER];
     }
 
     //extract issuer of token from metadata
