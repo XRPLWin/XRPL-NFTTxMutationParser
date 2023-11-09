@@ -338,7 +338,7 @@ class NFTTxMutationParser
   {
     if($this->account == $this->tx->Account) {
       $this->ref_direction = self::DIRECTION_IN;
-      $this->ref_roles = [self::ROLE_MINTER, self::ROLE_ISSUER];
+      $this->ref_roles = [self::ROLE_MINTER, self::ROLE_ISSUER, self::ROLE_OWNER];
       $this->ref_nft = $this->extractAffectedURITokenID();
     }
   }

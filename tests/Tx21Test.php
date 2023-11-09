@@ -23,7 +23,7 @@ final class Tx21Test extends TestCase
       $this->assertEquals('CA781DB43A1AFEF26DFB38C6ECF1F76CAE00EE70979C6F8270AC8FA9AC3B05B4',$parsedTransaction['nft']);
       $this->assertEquals('CA781DB43A1AFEF26DFB38C6ECF1F76CAE00EE70979C6F8270AC8FA9AC3B05B4',$parsedTransaction['ref']['nft']);
       $this->assertEquals('IN',$parsedTransaction['ref']['direction']);
-      $this->assertEquals(['ISSUER','MINTER'],$parsedTransaction['ref']['roles']);
+      $this->assertEquals(['ISSUER','MINTER','OWNER'],$parsedTransaction['ref']['roles']);
   }
 
   public function testUriTokenOther()
