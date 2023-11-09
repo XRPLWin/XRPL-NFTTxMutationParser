@@ -337,9 +337,28 @@ class NFTTxMutationParser
   private function handleURITokenMint(): void
   {
     if($this->account == $this->tx->Account) {
-      $this->ref_direction = self::DIRECTION_IN;
-      $this->ref_roles = [self::ROLE_MINTER, self::ROLE_ISSUER, self::ROLE_OWNER];
-      $this->ref_nft = $this->extractAffectedURITokenID();
+      //minter perspective
+      if(isset($this->tx->Destination)) {
+        //other owner
+        $this->ref_direction = self::DIRECTION_UNKNOWN;
+        $this->ref_roles = [self::ROLE_MINTER, self::ROLE_ISSUER];
+        $this->ref_nft = $this->extractAffectedURITokenID();
+        
+      } else {
+        //minter is new owner
+        $this->ref_direction = self::DIRECTION_IN;
+        $this->ref_roles = [self::ROLE_MINTER, self::ROLE_ISSUER, self::ROLE_OWNER];
+        $this->ref_nft = $this->extractAffectedURITokenID();
+      }
+    } else {
+      if(isset($this->tx->Destination)) {
+        if($this->account == $this->tx->Destination) {
+          $this->ref_direction = self::DIRECTION_IN;
+          $this->ref_roles = [self::ROLE_OWNER];
+          $this->ref_nft = $this->extractAffectedURITokenID();
+        }
+      }
+      
     }
   }
 

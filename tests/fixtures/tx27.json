@@ -1,0 +1,126 @@
+{
+  "result": {
+    "Account": "rHyB8fpHCTB4NhwayEtNH9DsjLue33n1ph",
+    "Amount": "0",
+    "Destination": "rnBA8kVE8ZxqiRnUccKEo2x1Qa6sJWDXA9",
+    "EmitDetails": {
+      "EmitBurden": "1",
+      "EmitGeneration": 1,
+      "EmitHookHash": "B3D87CA259530F6D8852B16F78E399860DF2A1C87A6CB30F9DECE8BF948FAE16",
+      "EmitNonce": "33B3B1944298E8AA3F40CC68EB74C83D24260CFB687C2E77875138CAD889D5DA",
+      "EmitParentTxnID": "605F982880059B4AA728E42B96737BFCA79749C5F89933A9018BB7A0D21E8F35"
+    },
+    "Fee": "10",
+    "FirstLedgerSequence": 229856,
+    "Flags": 2147483648,
+    "LastLedgerSequence": 229860,
+    "Sequence": 0,
+    "SigningPubKey": "000000000000000000000000000000000000000000000000000000000000000000",
+    "TransactionType": "URITokenMint",
+    "URI": "697066733A2F2F516D503944734D356A6B6B68615466694853774741456E316557323263586546734D41715A5A424C48735A726976",
+    "date": 752675541,
+    "hash": "D636ABADC71096929861F24261210F17A8BD8505A24AF74F614C9057D7C83B42",
+    "inLedger": 229856,
+    "ledger_index": 229856,
+    "meta": {
+      "AffectedNodes": [
+        {
+          "ModifiedNode": {
+            "LedgerEntryType": "AccountRoot",
+            "LedgerIndex": "112CA90AF854B89CEE313377D219DC5406D886065DBDD08959C0DB70F3A90B99",
+            "PreviousTxnID": "605F982880059B4AA728E42B96737BFCA79749C5F89933A9018BB7A0D21E8F35",
+            "PreviousTxnLgrSeq": 229855
+          }
+        },
+        {
+          "CreatedNode": {
+            "LedgerEntryType": "URIToken",
+            "LedgerIndex": "39C0D52EDEF285103DF8A9CCE6F4E1A4AE206A76D46BA2AF4834135856E36840",
+            "NewFields": {
+              "Destination": "rnBA8kVE8ZxqiRnUccKEo2x1Qa6sJWDXA9",
+              "Issuer": "rHyB8fpHCTB4NhwayEtNH9DsjLue33n1ph",
+              "Owner": "rHyB8fpHCTB4NhwayEtNH9DsjLue33n1ph",
+              "URI": "697066733A2F2F516D503944734D356A6B6B68615466694853774741456E316557323263586546734D41715A5A424C48735A726976"
+            }
+          }
+        },
+        {
+          "ModifiedNode": {
+            "FinalFields": {
+              "Account": "rHyB8fpHCTB4NhwayEtNH9DsjLue33n1ph",
+              "AccountIndex": "5f",
+              "Balance": "978768650",
+              "Domain": "7472616E7369612E636F",
+              "EmailHash": "1CC150400E735FC2BEE2ED5E0F86619E",
+              "Flags": 1082130432,
+              "OwnerCount": 3,
+              "Sequence": 752406025
+            },
+            "LedgerEntryType": "AccountRoot",
+            "LedgerIndex": "B4D4DDD02AD602F2CA3CE32ACD3280172C212EEE90644E4220338B70AAEEACAD",
+            "PreviousFields": {
+              "Balance": "978768660",
+              "Flags": 8388608,
+              "OwnerCount": 2
+            }
+          }
+        },
+        {
+          "DeletedNode": {
+            "FinalFields": {
+              "Flags": 4,
+              "RootIndex": "B4DE823055D00BC12CD78FE1AAF74EE6062195B2629F49A25915A39C64BE1900"
+            },
+            "LedgerEntryType": "DirectoryNode",
+            "LedgerIndex": "B4DE823055D00BC12CD78FE1AAF74EE6062195B2629F49A25915A39C64BE1900"
+          }
+        },
+        {
+          "DeletedNode": {
+            "FinalFields": {
+              "EmittedTxn": {
+                "Account": "rHyB8fpHCTB4NhwayEtNH9DsjLue33n1ph",
+                "Amount": "0",
+                "Destination": "rnBA8kVE8ZxqiRnUccKEo2x1Qa6sJWDXA9",
+                "EmitDetails": {
+                  "EmitBurden": "1",
+                  "EmitGeneration": 1,
+                  "EmitHookHash": "B3D87CA259530F6D8852B16F78E399860DF2A1C87A6CB30F9DECE8BF948FAE16",
+                  "EmitNonce": "33B3B1944298E8AA3F40CC68EB74C83D24260CFB687C2E77875138CAD889D5DA",
+                  "EmitParentTxnID": "605F982880059B4AA728E42B96737BFCA79749C5F89933A9018BB7A0D21E8F35"
+                },
+                "Fee": "10",
+                "FirstLedgerSequence": 229856,
+                "Flags": 2147483648,
+                "LastLedgerSequence": 229860,
+                "Sequence": 0,
+                "SigningPubKey": "000000000000000000000000000000000000000000000000000000000000000000",
+                "TransactionType": "URITokenMint",
+                "URI": "697066733A2F2F516D503944734D356A6B6B68615466694853774741456E316557323263586546734D41715A5A424C48735A726976"
+              },
+              "Flags": 0,
+              "OwnerNode": "0"
+            },
+            "LedgerEntryType": "EmittedTxn",
+            "LedgerIndex": "C4EDA021231F39A26021AB3235582E77638FC081964C0C90F25B3F824BA6FE86"
+          }
+        },
+        {
+          "ModifiedNode": {
+            "FinalFields": {
+              "Flags": 0,
+              "Owner": "rHyB8fpHCTB4NhwayEtNH9DsjLue33n1ph",
+              "RootIndex": "DA0AC83F628E395895562A4ED92B611D1169704DF7CD8F64B717D9BF19E68649"
+            },
+            "LedgerEntryType": "DirectoryNode",
+            "LedgerIndex": "DA0AC83F628E395895562A4ED92B611D1169704DF7CD8F64B717D9BF19E68649"
+          }
+        }
+      ],
+      "TransactionIndex": 0,
+      "TransactionResult": "tesSUCCESS"
+    },
+    "status": "success",
+    "validated": true
+  }
+}
