@@ -34,10 +34,12 @@ class NFTTxMutationParser
 
   # Result variables
   private ?string $nft = null;
+  private array $nfts = []; //Remit transfers
   private ?string $context = null;
 
   # Reference account result variables
   private ?string $ref_nft = null;
+  private array $ref_nfts = []; //Remit transfers
   private string $ref_direction = self::DIRECTION_UNKNOWN;
   private array $ref_roles = [];
 
@@ -88,6 +90,9 @@ class NFTTxMutationParser
       case 'URITokenCancelSellOffer':
         $this->handleURITokenCancelSellOffer();
         break;
+      case 'Remit':
+        $this->handleRemit();
+        break;
     }
     $this->nft = $this->ref_nft;
     
@@ -115,6 +120,10 @@ class NFTTxMutationParser
         case 'URITokenCreateSellOffer':
         case 'URITokenCancelSellOffer':
           $this->nft = $this->extractAffectedURITokenID();
+          break;
+        case 'Remit':
+          $this->nft = $this->extractAffectedURITokenID(false);
+          $this->nfts = $this->extractRemitURITokenIDs();
           break;
       }
     }
@@ -431,13 +440,68 @@ class NFTTxMutationParser
     }
   }
 
+  private function handleRemit(): void
+  {
+    
+    //if(!isset($this->tx->MintURIToken))
+    //  return;
+
+    if($this->account == $this->tx->Account) {
+      // Remit creator perspective
+      $nft = $this->extractAffectedURITokenID(false);
+      $ref_nfts = $this->extractRemitURITokenIDs();
+      if($nft == null && !count($ref_nfts)) return; //no affected nfts found
+
+      $this->ref_direction = self::DIRECTION_OUT;
+      if($nft != null) {
+        //Minted nft found
+        $this->ref_roles = [self::ROLE_ISSUER, self::ROLE_MINTER];
+        $this->ref_nft = $nft;
+      }
+
+      if(count($ref_nfts)) {
+        //NFT Transfers found
+        $this->ref_roles[] = self::ROLE_SELLER;
+        $this->ref_nfts = $ref_nfts;
+      }
+      
+    } else if ($this->account == $this->tx->Destination) {
+      //Remit receiver perspective
+      $nft = $this->extractAffectedURITokenID(false);
+      $ref_nfts = $this->extractRemitURITokenIDs();
+      if($nft == null && !count($ref_nfts)) return; //no affected nfts found
+
+      $this->ref_direction = self::DIRECTION_IN;
+      if($nft != null) {
+        //Minted nft found
+        $this->ref_roles = [self::ROLE_OWNER];
+        $this->ref_nft = $nft;
+      }
+
+      if(count($ref_nfts)) {
+        //NFT Transfers found
+        $this->ref_roles[] = self::ROLE_OWNER;
+        $this->ref_nfts = $ref_nfts;
+      }
+    }
+    $this->ref_roles = \array_unique($this->ref_roles);
+  }
+
+
+  private function extractRemitURITokenIDs(): array
+  {
+    if(!isset($this->tx->URITokenIDs))
+      return [];
+    return $this->tx->URITokenIDs;
+  }
+
   /**
    * Extracts single URITokenID from metadata
    * Handled CreatedNode of type URIToken
    * @throws \Exception
    * @return string
    */
-  private function extractAffectedURITokenID(): string
+  private function extractAffectedURITokenID(bool $throwOnEmpty = true): ?string
   {
     if(isset($this->tx->URITokenID))
       return $this->tx->URITokenID;
@@ -447,7 +511,9 @@ class NFTTxMutationParser
         return $an->CreatedNode->LedgerIndex;
       }
     }
-    throw new \Exception('Unhandled: no URITokenID found in meta in tx ['.$this->tx->hash.']');
+    if($throwOnEmpty)
+      throw new \Exception('Unhandled: no URITokenID found in meta in tx ['.$this->tx->hash.']');
+    return null;
   }
 
   /**
@@ -610,10 +676,12 @@ class NFTTxMutationParser
     \sort($roles,SORT_REGULAR);
     return [
       'nft' => $this->nft,
+      'nfts' => $this->nfts,
       'context' => $this->context,
       'ref' => [
         'account' => $this->account,
         'nft' => $this->ref_nft,
+        'nfts' => $this->ref_nfts,
         'direction' => $this->ref_direction,
         'roles'      => $roles
       ]

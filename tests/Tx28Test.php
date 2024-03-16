@@ -6,54 +6,52 @@ use PHPUnit\Framework\TestCase;
 use XRPLWin\XRPLNFTTxMutatationParser\NFTTxMutationParser;
 
 /***
- * URITokenMint to different destination (owner)
- * Minting on behalf of new owner
+ * Remit
+ * Mint URIToken
  */
-final class Tx27Test extends TestCase
+final class Tx28Test extends TestCase
 {
-  public function testUriTokenMinter()
+  public function testRemitSenderMinter()
   {
-      $transaction = file_get_contents(__DIR__.'/fixtures/tx27.json');
+      $transaction = file_get_contents(__DIR__.'/fixtures/tx28.json');
       $transaction = \json_decode($transaction);
-      $account = "rHyB8fpHCTB4NhwayEtNH9DsjLue33n1ph"; //minter
+      $account = "r3RtnU293vBgLCHvCRmo2goUECnnMVS5qA"; //minter
       $NFTTxMutationParser = new NFTTxMutationParser($account, $transaction->result);
       $parsedTransaction = $NFTTxMutationParser->result();
 
       $this->assertIsArray($parsedTransaction);
       
-      $this->assertEquals('39C0D52EDEF285103DF8A9CCE6F4E1A4AE206A76D46BA2AF4834135856E36840',$parsedTransaction['nft']);
-      $this->assertEquals('39C0D52EDEF285103DF8A9CCE6F4E1A4AE206A76D46BA2AF4834135856E36840',$parsedTransaction['ref']['nft']);
-      $this->assertEquals('UNKNOWN',$parsedTransaction['ref']['direction']);
+      $this->assertEquals('80B3BD46EBBFDFD0317CCFE7F533988A73A4281FABF1289242D00F8ED1C61878',$parsedTransaction['nft']);
+      $this->assertEquals('80B3BD46EBBFDFD0317CCFE7F533988A73A4281FABF1289242D00F8ED1C61878',$parsedTransaction['ref']['nft']);
+      $this->assertEquals('OUT',$parsedTransaction['ref']['direction']);
       $this->assertEquals(['ISSUER','MINTER'],$parsedTransaction['ref']['roles']);
   }
 
-  public function testUriTokenDestination()
+  public function testRemitDestination()
   {
-      $transaction = file_get_contents(__DIR__.'/fixtures/tx27.json');
+      $transaction = file_get_contents(__DIR__.'/fixtures/tx28.json');
       $transaction = \json_decode($transaction);
-      $account = "rnBA8kVE8ZxqiRnUccKEo2x1Qa6sJWDXA9";
+      $account = "rBL1AMHX2J1uoMKZqpViHSBBcMbLpGpf9i";
       $NFTTxMutationParser = new NFTTxMutationParser($account, $transaction->result);
       $parsedTransaction = $NFTTxMutationParser->result();
-
       $this->assertIsArray($parsedTransaction);
 
-      $this->assertEquals('39C0D52EDEF285103DF8A9CCE6F4E1A4AE206A76D46BA2AF4834135856E36840',$parsedTransaction['nft']);
-      $this->assertEquals('39C0D52EDEF285103DF8A9CCE6F4E1A4AE206A76D46BA2AF4834135856E36840',$parsedTransaction['ref']['nft']);
+      $this->assertEquals('80B3BD46EBBFDFD0317CCFE7F533988A73A4281FABF1289242D00F8ED1C61878',$parsedTransaction['nft']);
+      $this->assertEquals('80B3BD46EBBFDFD0317CCFE7F533988A73A4281FABF1289242D00F8ED1C61878',$parsedTransaction['ref']['nft']);
       $this->assertEquals('IN',$parsedTransaction['ref']['direction']);
       $this->assertEquals(['OWNER'],$parsedTransaction['ref']['roles']);
   }
 
-  public function testUriTokenOther()
+  public function testRemitOther()
   {
-      $transaction = file_get_contents(__DIR__.'/fixtures/tx27.json');
+      $transaction = file_get_contents(__DIR__.'/fixtures/tx28.json');
       $transaction = \json_decode($transaction);
       $account = "r9gYbjBfANRfA1JHfaCVfPPGfXYiqQvmhS";
       $NFTTxMutationParser = new NFTTxMutationParser($account, $transaction->result);
       $parsedTransaction = $NFTTxMutationParser->result();
 
       $this->assertIsArray($parsedTransaction);
-
-      $this->assertEquals('39C0D52EDEF285103DF8A9CCE6F4E1A4AE206A76D46BA2AF4834135856E36840',$parsedTransaction['nft']);
+      $this->assertEquals('80B3BD46EBBFDFD0317CCFE7F533988A73A4281FABF1289242D00F8ED1C61878',$parsedTransaction['nft']);
       $this->assertEquals(null,$parsedTransaction['ref']['nft']);
       $this->assertEquals('UNKNOWN',$parsedTransaction['ref']['direction']);
       $this->assertEquals(['UNKNOWN'],$parsedTransaction['ref']['roles']);

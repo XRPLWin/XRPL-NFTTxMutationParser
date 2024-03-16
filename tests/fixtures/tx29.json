@@ -1,0 +1,122 @@
+{
+    "result": {
+      "Account": "r3RtnU293vBgLCHvCRmo2goUECnnMVS5qA",
+      "Destination": "rBL1AMHX2J1uoMKZqpViHSBBcMbLpGpf9i",
+      "Fee": "10",
+      "Flags": 0,
+      "LastLedgerSequence": 11766830,
+      "NetworkID": 21338,
+      "Sequence": 762012004,
+      "SigningPubKey": "02064E76239E7A5E579C061F02051EF574CEDFE04564DD22ABE7811A0CE25080EA",
+      "TransactionType": "Remit",
+      "TxnSignature": "3045022100F4F4487F178796275B7BC863F17D9B558B791BBACE4AA807A99B4E4D8F67AC70022003591DB4807AFFB522613811C021C680D67BD37ECC4670E9E7C8612714AD01BE",
+      "URITokenIDs": [
+        "38B40CB673CB072DEBB7FBE798162570B081BA6E89652BF2FDA0C522A1612920",
+        "02E51D07084FA44F7D7B521EE1F0439E7B4FB0ADD98F129C8FDDEA643A9ABCC7"
+      ],
+      "ctid": "C0B38C1C0000535A",
+      "date": 763736333,
+      "hash": "8B97407976C43956FB241B690D3B7D3FA2AC812375603722B2A343BC5488289E",
+      "inLedger": 11766812,
+      "ledger_index": 11766812,
+      "meta": {
+        "AffectedNodes": [
+          {
+            "ModifiedNode": {
+              "FinalFields": {
+                "Flags": 0,
+                "Issuer": "r3RtnU293vBgLCHvCRmo2goUECnnMVS5qA",
+                "Owner": "rBL1AMHX2J1uoMKZqpViHSBBcMbLpGpf9i",
+                "OwnerNode": "0",
+                "URI": "697066733A2F2F4445414442454547"
+              },
+              "LedgerEntryType": "URIToken",
+              "LedgerIndex": "02E51D07084FA44F7D7B521EE1F0439E7B4FB0ADD98F129C8FDDEA643A9ABCC7",
+              "PreviousFields": {
+                "Owner": "r3RtnU293vBgLCHvCRmo2goUECnnMVS5qA"
+              }
+            }
+          },
+          {
+            "ModifiedNode": {
+              "FinalFields": {
+                "Digest": "697066733A2F2F4445414442454546697066733A2F2F44454144424545467878",
+                "Flags": 0,
+                "Issuer": "r3RtnU293vBgLCHvCRmo2goUECnnMVS5qA",
+                "Owner": "rBL1AMHX2J1uoMKZqpViHSBBcMbLpGpf9i",
+                "OwnerNode": "0",
+                "URI": "697066733A2F2F4445414442454546"
+              },
+              "LedgerEntryType": "URIToken",
+              "LedgerIndex": "38B40CB673CB072DEBB7FBE798162570B081BA6E89652BF2FDA0C522A1612920",
+              "PreviousFields": {
+                "Owner": "r3RtnU293vBgLCHvCRmo2goUECnnMVS5qA"
+              }
+            }
+          },
+          {
+            "ModifiedNode": {
+              "FinalFields": {
+                "Account": "rBL1AMHX2J1uoMKZqpViHSBBcMbLpGpf9i",
+                "AccountIndex": "4172",
+                "Balance": "10000094552",
+                "Flags": 0,
+                "OwnerCount": 2,
+                "Sequence": 761820904
+              },
+              "LedgerEntryType": "AccountRoot",
+              "LedgerIndex": "40B6204216171DFC0415ECC4F96E9B0697CDF6DBD15F4D30E809E80255A9D937",
+              "PreviousFields": {
+                "Balance": "9999694552",
+                "OwnerCount": 0
+              }
+            }
+          },
+          {
+            "ModifiedNode": {
+              "FinalFields": {
+                "Account": "r3RtnU293vBgLCHvCRmo2goUECnnMVS5qA",
+                "AccountIndex": "42ed",
+                "Balance": "9999599960",
+                "Flags": 1073741824,
+                "OwnerCount": 0,
+                "Sequence": 762012005
+              },
+              "LedgerEntryType": "AccountRoot",
+              "LedgerIndex": "6A8101F6DD1732CC96ADF360EE999A73C977309B42FE88DD842DF798F1E55731",
+              "PreviousFields": {
+                "Balance": "9999999970",
+                "OwnerCount": 2,
+                "Sequence": 762012004
+              }
+            }
+          },
+          {
+            "ModifiedNode": {
+              "FinalFields": {
+                "Flags": 0,
+                "Owner": "r3RtnU293vBgLCHvCRmo2goUECnnMVS5qA",
+                "RootIndex": "7424D4B77DE91BD145E5704FF763CCCBAF0F5CCE85A6FB0AA9D826091A1D1711"
+              },
+              "LedgerEntryType": "DirectoryNode",
+              "LedgerIndex": "7424D4B77DE91BD145E5704FF763CCCBAF0F5CCE85A6FB0AA9D826091A1D1711"
+            }
+          },
+          {
+            "CreatedNode": {
+              "LedgerEntryType": "DirectoryNode",
+              "LedgerIndex": "EECA9C72A1B8499FDD27BD16720780E935856D22CF562E22EC9FFCFA070AEE59",
+              "NewFields": {
+                "Owner": "rBL1AMHX2J1uoMKZqpViHSBBcMbLpGpf9i",
+                "RootIndex": "EECA9C72A1B8499FDD27BD16720780E935856D22CF562E22EC9FFCFA070AEE59"
+              }
+            }
+          }
+        ],
+        "TransactionIndex": 0,
+        "TransactionResult": "tesSUCCESS"
+      },
+      "status": "success",
+      "validated": true
+    }
+  }
