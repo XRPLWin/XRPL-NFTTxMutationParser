@@ -88,7 +88,7 @@ print_r($parsedTransaction);
 
 | Key  | Type | Description |
 | ------------- | ------------- | ------------- |
-| nft  | ?String  | NFToken or URIToken always present in types: `NFTokenMint`, `NFTokenBurn`, `NFTokenAcceptOffer`, `NFTokenCreateOffer`, `URI*`, `Remit`   |
+| nft  | ?String  | NFToken or URIToken always present in types: `NFTokenMint`, `NFTokenBurn`, `NFTokenAcceptOffer`, `NFTokenCreateOffer`, `URI*`, null in `Remit` if there is no token minted   |
 | nfts  | Array  | NFTokens transferred in Remit transaction type (not including Minted token)  |
 | context  | ?String  | Context of transaction (specifically offers). One of: `null`,`"BUY"`,`"SELL"`,`"BROKERED"` |
 | ref.account  | String  | Reference account |
