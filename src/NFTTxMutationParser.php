@@ -75,6 +75,9 @@ class NFTTxMutationParser
       case 'NFTokenAcceptOffer':
         $this->handleNFTokenAcceptOffer();
         break;
+      case 'NFTokenModify':
+        $this->handleNFTokenModify();
+        break;
       case 'URITokenBuy':
         $this->handleURITokenBuy();
         break;
@@ -93,6 +96,7 @@ class NFTTxMutationParser
       case 'Remit':
         $this->handleRemit();
         break;
+      
     }
     $this->nft = $this->ref_nft;
     
@@ -105,6 +109,7 @@ class NFTTxMutationParser
           $this->nft = $this->extractAffectedNFTokenID();
           break;
         case 'NFTokenBurn':
+        case 'NFTokenModify':
           $this->nft = $this->tx->NFTokenID;
           //$this->nft = $this->extractAffectedNFTokenID();
           break;
@@ -307,6 +312,11 @@ class NFTTxMutationParser
       $this->ref_direction = self::DIRECTION_IN;
       $this->ref_roles[] = self::ROLE_BUYER;
     }
+  }
+
+  private function handleNFTokenModify(): void
+  {
+    //
   }
 
   /**
